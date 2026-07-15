@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agribusiness - Inventory Manager Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: linear-gradient(rgba(244, 247, 244, 0.92), rgba(244, 247, 244, 0.92)), 
+                        url('image_c85a3d.png');
+            background-size: 450px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR IMPLEMENTATION DESIGNED FROM image_99e48c.png */
+        .sidebar {
+            width: 260px;
+            background-color: #0c2b0c;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-right: 3px solid #ffb74d;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffb74d;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            padding: 16px 20px;
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sidebar-menu li a:hover, 
+        .sidebar-menu li a.active {
+            background-color: #1b471b;
+            color: white;
+            font-weight: 600;
+        }
+
+        .sidebar-menu li a.logout {
+            color: #ff7675;
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-menu li a.logout:hover {
+            background-color: #c0392b;
+            color: white;
+        }
+
+        /* MAIN CONTENT WORKSPACE */
+        .main-workspace {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #002800;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #ffb74d;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .user-info {
+            font-size: 14px;
+            color: #ffb74d;
+        }
+
+        .content-body {
+            padding: 25px;
+            max-width: 1200px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* PANEL VISIBILITY CONTROL */
+        .view-panel {
+            display: none;
+        }
+        .view-panel.active-panel {
+            display: block;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0, 40, 0, 0.08);
+            border: 1px solid #e1ebe1;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: #004d00;
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 2px solid #ffb74d;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* KPIS / STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: #004d00;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-box.sales { background-color: #e65100; }
+        .stat-box.alerts { background-color: #b71c1c; }
+
+        .stat-box h3 { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; }
+        .stat-box p { margin: 8px 0 0 0; font-size: 24px; font-weight: bold; }
+
+        /* FORM ELEMENTS */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #002800;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .btn-submit {
+            background-color: #004d00;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-submit:hover {
+            background-color: #1b5e20;
+        }
+
+        /* TABLES & REPORT LAYOUTS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        table th {
+            background-color: #002800;
+            color: white;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-instock { background-color: #d4edda; color: #155724; }
+        .badge-low { background-color: #f8d7da; color: #721c24; }
+
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sell {
+            background-color: #ffb74d;
+            color: #002800;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-sell:hover {
+            background-color: #e65100;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #e53935;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background-color: #b71c1c;
+        }
+
+        .report-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-download {
+            background-color: #e65100;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-download:hover {
+            background-color: #b71c1c;
+        }
+
+        .btn-clear {
+            background-color: #777;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .btn-clear:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR NAVIGATION FROM image_99e48c.png -->
+<nav class="sidebar">
+    <div class="sidebar-brand">MULLAH AGRIBUSINESS</div>
+    <ul class="sidebar-menu">
+        <li><a onclick="switchPanel('dashboard-panel', this)" class="active">Dashboard Overview</a></li>
+        <li><a onclick="switchPanel('register-panel', this)">Register New Stock</a></li>
+        <li><a onclick="switchPanel('daily-panel', this)">Daily Transaction Log</a></li>
+        <li><a onclick="switchPanel('history-panel', this)">Finance & Monthly History</a></li>
+        <li><a class="logout" href="auth.html">Logout Manager</a></li>
+    </ul>
+</nav>
+
+<!-- MAIN APP SPACE -->
+<div class="main-workspace">
+    <header>
+        <h1>Store Management Control Panel</h1>
+        <div class="user-info">Logged in as: <b>Store Manager</b></div>
+    </header>
+
+    <div class="content-body">
+        
+        <!-- PANEL 1: DASHBOARD OVERVIEW -->
+        <div id="dashboard-panel" class="view-panel active-panel">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>Total Product</h3>
+                    <p id="totalProductsCount">0</p>
+                </div>
+                <div class="stat-box sales">
+                    <h3>Today's Store Sale</h3>
+                    <p id="todaySalesAmount">0 RWF</p>
+                </div>
+                <div class="stat-box alerts">
+                    <h3>Low Stock Alerts</h3>
+                    <p id="lowStockCount">0</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Current Stock Inventory & Quick Counter Checkout</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Stock Qty</th>
+                                <th>Price (Unit)</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <!-- Rows load dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL 2: REGISTER NEW STOCK ITEM WITH COMPREHENSIVE VET & AGRO CATEGORIES -->
+        <div id="register-panel" class="view-panel">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <h2>Register New Stock Item</h2>
+                <form id="medicineForm">
+                    <div class="form-group">
+                        <label for="medName">Item Name</label>
+                        <input type="text" id="medName" placeholder="e.g., Mancozeb 80% WP or Oxytetracycline 20%" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medCategory">Category</label>
+                        <select id="medCategory">
+                            <!-- Veterinary Medications Subgroup -->
+                            <optgroup label="Veterinary Medications (Livestock)">
+                                <option value="Vet Antibiotics">Antibiotics</option>
+                                <option value="Vet Dewormers">Anthelmintics / Dewormers</option>
+                                <option value="Vet Ectoparasiticides">Ectoparasiticides / Acaricides</option>
+                                <option value="Vet Vaccines">Vaccines</option>
+                                <option value="Vet Vitamins">Vitamins & Mineral Supplements</option>
+                                <option value="Vet Analgesics">Anti-inflammatory & Analgesics</option>
+                            </optgroup>
+                            <!-- Agricultural Inputs Subgroup -->
+                            <optgroup label="Agricultural Inputs (Crop Protection)">
+                                <option value="Agro Insecticides">Insecticides</option>
+                                <option value="Agro Fungicides">Fungicides</option>
+                                <option value="Agro Herbicides">Herbicides / Weedkillers</option>
+                                <option value="Agro Fertilizers">Fertilizers</option>
+                                <option value="Agro Rodenticides">Rodenticides</option>
+                                <option value="Agro Growth Regulators">Plant Growth Regulators</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="medQty">Initial Quantity (Units)</label>
+                        <input type="number" id="medQty" placeholder="e.g., 50" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medPrice">Selling Price per Unit (RWF)</label>
+                        <input type="number" id="medPrice" placeholder="e.g., 4500" min="1" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Save & Update Master Database</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- NEW PANEL 3: DAILY TRANSACTION LOG WITH CSV DOWNLOAD -->
+        <div id="daily-panel" class="view-panel">
+            <div class="card">
+                <div class="report-header-flex">
+                    <h2>📋 Daily Real-Time Sales Log & Transactions</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-clear" onclick="clearDailyHistory()">Clear Today's Log</button>
+                        <button class="btn-download" onclick="downloadDailyReportCSV()">📥 Download Today's CSV Report</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Qty Sold</th>
+                                <th>Unit Price</th>
+                                <th>Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dailyHistoryTableBody">
+                            <!-- Daily logs load dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL 4: MONTHLY HISTORY LOG -->
+        <div id="history-panel" class="view-panel">
+            <div class="card">
+                <div class="report-header-flex">
+                    <h2>📊 Store Monthly Performance & Archives (2026)</h2>
+                    <button class="btn-download" onclick="downloadMonthlyReportCSV()">📥 Download Financial Report (.CSV)</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Month Period</th>
+                                <th>Total Stock Received</th>
+                                <th>Units Dispensed</th>
+                                <th>Gross Revenue</th>
+                                <th>Status Report</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- Standard monthly historical mock data populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadInventory();
+        loadDailyHistory();
+        loadMonthlyHistory();
+        
+        document.getElementById('medicineForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addMedicine();
+        });
+    });
+
+    // Central Data Repository Sync
+    const defaultStock = [
+        { id: 101, name: "Oxytetracycline 20%", category: "Vet Antibiotics", qty: 35, price: 5500 },
+        { id: 102, name: "NPK 17-17-17 (50kg)", category: "Agro Fertilizers", qty: 12, price: 52000 },
+        { id: 103, name: "Albendazole Bolus", category: "Vet Dewormers", qty: 4, price: 1200 },
+        { id: 104, name: "Mancozeb Preventive Fungicide", category: "Agro Fungicides", qty: 18, price: 6500 }
+    ];
+
+    const historicalMonths = [
+        { month: "January 2026", stockIn: 150, unitsOut: 110, revenue: 840000 },
+        { month: "February 2026", stockIn: 210, unitsOut: 185, revenue: 1420000 },
+        { month: "March 2026", stockIn: 180, unitsOut: 140, revenue: 990000 },
+        { month: "April 2026", stockIn: 300, unitsOut: 245, revenue: 2150000 },
+        { month: "May 2026", stockIn: 250, unitsOut: 210, revenue: 1850000 },
+        { month: "June 2026", stockIn: 95, unitsOut: 64, revenue: 582400 }
+    ];
+
+    function switchPanel(panelId, element) {
+        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active-panel'));
+        document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
+        
+        document.getElementById(panelId).classList.add('active-panel');
+        element.classList.add('active');
+    }
+
+    function getStock() {
+        const stored = localStorage.getItem('mullah_vet_stock');
+        if (!stored) {
+            localStorage.setItem('mullah_vet_stock', JSON.stringify(defaultStock));
+            return defaultStock;
+        }
+        return JSON.parse(stored);
+    }
+
+    function getSales() {
+        return parseInt(localStorage.getItem('mullah_vet_today_sales')) || 0;
+    }
+
+    function getDailyHistory() {
+        const history = localStorage.getItem('mullah_vet_daily_history');
+        return history ? JSON.parse(history) : [];
+    }
+
+    function loadInventory() {
+        const stock = getStock();
+        const sales = getSales();
+        const tbody = document.getElementById('inventoryTableBody');
+        tbody.innerHTML = "";
+
+        let lowStockCounter = 0;
+
+        stock.forEach(item => {
+            const isLow = item.qty <= 5;
+            if (isLow) lowStockCounter++;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><b>${item.name}</b></td>
+                <td><span style="color:#555;">${item.category}</span></td>
+                <td><b>${item.qty} units</b></td>
+                <td>${item.price.toLocaleString()} RWF</td>
+                <td><span class="badge ${isLow ? 'badge-low' : 'badge-instock'}">${isLow ? 'Low Stock Alert' : 'In Stock'}</span></td>
+                <td>
+                    <div class="actions-cell">
+                        <button class="btn-sell" onclick="sellUnit(${item.id})">Sell 1 Unit</button>
+                        <button class="btn-delete" onclick="deleteMedicine(${item.id})">Delete</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        document.getElementById('totalProductsCount').innerText = stock.length;
+        document.getElementById('todaySalesAmount').innerText = sales.toLocaleString() + " RWF";
+        document.getElementById('lowStockCount').innerText = lowStockCounter;
+    }
+
+    function addMedicine() {
+        const name = document.getElementById('medName').value.trim();
+        const category = document.getElementById('medCategory').value;
+        const qty = parseInt(document.getElementById('medQty').value);
+        const price = parseInt(document.getElementById('medPrice').value);
+
+        const stock = getStock();
+        const newItem = { id: Date.now(), name: name, category: category, qty: qty, price: price };
+
+        stock.push(newItem);
+        localStorage.setItem('mullah_vet_stock', JSON.stringify(stock));
+        
+        alert(`Success: "${name}" registered successfully under group [${category}]!`);
+        document.getElementById('medicineForm').reset();
+        loadInventory();
+        switchPanel('dashboard-panel', document.querySelector('.sidebar-menu li a'));
+    }
+
+    function sellUnit(id) {
+        let stock = getStock();
+        let currentSales = getSales();
+        
+        const idx = stock.findIndex(item => item.id === id);
+        if (idx !== -1) {
+            if (stock[idx].qty > 0) {
+                stock[idx].qty -= 1;
+                currentSales += stock[idx].price;
+                
+                // Add record to daily transactions history log
+                const history = getDailyHistory();
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+                const logEntry = {
+                    time: timeStr,
+                    name: stock[idx].name,
+                    category: stock[idx].category,
+                    qty: 1,
+                    price: stock[idx].price,
+                    total: stock[idx].price
+                };
+                
+                history.unshift(logEntry); // Insert at top
+                
+                localStorage.setItem('mullah_vet_stock', JSON.stringify(stock));
+                localStorage.setItem('mullah_vet_today_sales', currentSales.toString());
+                localStorage.setItem('mullah_vet_daily_history', JSON.stringify(history));
+                
+                loadInventory();
+                loadDailyHistory();
+            } else {
+                alert("Out of stock! Run structural reconciliation or update entries.");
+            }
+        }
+    }
+
+    function deleteMedicine(id) {
+        if (confirm("Remove item entry from database record?")) {
+            let stock = getStock();
+            stock = stock.filter(item => item.id !== id);
+            localStorage.setItem('mullah_vet_stock', JSON.stringify(stock));
+            loadInventory();
+        }
+    }
+
+    function loadDailyHistory() {
+        const history = getDailyHistory();
+        const tbody = document.getElementById('dailyHistoryTableBody');
+        tbody.innerHTML = "";
+
+        if (history.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888; padding: 20px;">No sales transactions recorded today.</td></tr>`;
+            return;
+        }
+
+        history.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${log.time}</td>
+                <td><b>${log.name}</b></td>
+                <td><span style="color:#555;">${log.category}</span></td>
+                <td>${log.qty} unit(s)</td>
+                <td>${log.price.toLocaleString()} RWF</td>
+                <td><b>${log.total.toLocaleString()} RWF</b></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function clearDailyHistory() {
+        if (confirm("Are you sure you want to clear today's transaction log? This will reset today's sale stats to zero!")) {
+            localStorage.setItem('mullah_vet_daily_history', JSON.stringify([]));
+            localStorage.setItem('mullah_vet_today_sales', '0');
+            loadInventory();
+            loadDailyHistory();
+        }
+    }
+
+    function downloadDailyReportCSV() {
+        const history = getDailyHistory();
+        if (history.length === 0) {
+            alert("No daily data available to extract. Please make sales first.");
+            return;
+        }
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Time,Product Name,Category,Quantity Sold,Unit Price (RWF),Total Revenue (RWF)\n";
+        
+        history.forEach(log => {
+            const cleanName = log.name.replace(/,/g, " ");
+            const cleanCategory = log.category.replace(/,/g, " ");
+            csvContent += `"${log.time}","${cleanName}","${cleanCategory}",${log.qty},${log.price},${log.total}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        const today = new Date().toISOString().split('T')[0];
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Mullah_Daily_Sales_${today}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function loadMonthlyHistory() {
+        const tbody = document.getElementById('historyTableBody');
+        tbody.innerHTML = "";
+        historicalMonths.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${row.month}</b></td>
+                <td>${row.stockIn} Items Received</td>
+                <td>${row.unitsOut} Units Handled</td>
+                <td><b>${row.revenue.toLocaleString()} RWF</b></td>
+                <td><span style="color:green; font-weight:bold;">✓ Audited & Reconciled</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function downloadMonthlyReportCSV() {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Month Period,Total Stock Received,Units Dispensed,Gross Revenue (RWF)\n";
+        
+        historicalMonths.forEach(row => {
+            csvContent += `"${row.month}",${row.stockIn},${row.unitsOut},${row.revenue}\n`;
+        });
+        
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Mullah_Agribusiness_Monthly_Report_2026.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>

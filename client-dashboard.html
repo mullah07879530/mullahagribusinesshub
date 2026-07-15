@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - Client Portal</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Tahoma, sans-serif;
+            margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.85), rgba(0, 40, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed;
+            color: #333;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px; height: 100vh; background: #002d00;
+            position: fixed; left: 0; top: 0; color: white; padding: 25px; box-sizing: border-box;
+        }
+        .sidebar h2 { font-size: 22px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
+        .menu-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; color: #ddd; text-decoration: none; display: block; font-weight: 500; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.1); border-radius: 5px; color: white; }
+        .logout { color: #ff8a80; margin-top: 50px; text-decoration: none; display: block; }
+
+        .main-content { margin-left: 280px; padding: 40px; width: calc(100% - 280px); box-sizing: border-box; }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+        }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #004d00; }
+        .stat-card h3 { margin: 0; color: #666; font-size: 14px; text-transform: uppercase; }
+        .stat-card p { margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #004d00; }
+
+        .actions-section { margin-top: 30px; }
+        .actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .action-box {
+            background: white; padding: 25px; border-radius: 15px; text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; cursor: pointer;
+        }
+        .action-box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .action-box h4 { margin: 10px 0; color: #004d00; font-size: 18px; }
+        .action-box p { color: #666; font-size: 14px; margin-bottom: 15px; }
+        .action-btn { background: #004d00; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>MULLAH PORTAL</h2>
+    <a href="client-dashboard.html" class="menu-item active">Dashboard Home</a>
+    <a href="client-shop.html" class="menu-item">Shop / Iguriro</a>
+    <a href="request-services.html" class="menu-item">Request Advisory/Vet</a>
+    <a href="my-orders.html" class="menu-item">My Orders & Invoices</a>
+    <a href="profile-settings.html" class="menu-item">My Profile Settings</a>
+    <a href="index.html" class="logout">Exit Portal</a>
+</div>
+
+<div class="main-content">
+    <div class="welcome-card">
+        <h1 style="color: #004d00; margin-top: 0;">Muraho neza tugaye ikaze muhizi mworozi</h1>
+        <p style="color: #555;"> Welcome to Mullah Agribusiness Hub Client Portal.</p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Active Orders</h3>
+                <p>1 Order</p>
+            </div>
+            <div class="stat-card">
+                <h3>Consultancy Visits</h3>
+                <p>2 Scheduled</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Spent</h3>
+                <p>45,000 RWF</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-section">
+        <h2 style="color: white; margin-bottom: 20px;">Ibyo Ushobora Gukora Ako Kanya:</h2>
+        <div class="actions-grid">
+            
+            <div class="action-box">
+                <div style="font-size: 40px;">🌾</div>
+                <h4>Shop / Iguriro</h4>
+                <p>Sura iguriro ryacu uhitemo ibiryo by'inkoko, ingurube, cyangwa inka birimo intungamubiri zihagije.</p>
+                <a href="client-shop.html" class="action-btn">Go to Shop</a>
+            </div>
+
+            <div class="action-box">
+                <div style="font-size: 40px;">🩺</div>
+                <h4>Saba Veterineri cyangwa Inama</h4>
+                <p>Ufite ikibazo kuri farm yawe? Saba uruzinduko rw'inzobere zacu zize kuza kugufasha.</p>
+                <a href="request-services.html" class="action-btn">Request Service</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

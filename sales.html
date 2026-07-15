@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Admin - Finance Tracking</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.8), rgba(0, 40, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed;
+        }
+        
+        /* Unified Sidebar Navigation Layout */
+        .sidebar { width: 260px; height: 100vh; background: #002d00; position: fixed; left: 0; top: 0; color: white; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .sidebar h2 { font-size: 22px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
+        
+        .menu-container { flex-grow: 1; overflow-y: auto; }
+        .menu-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; color: #ddd; text-decoration: none; display: block; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.1); border-radius: 5px; color: white; }
+        
+        .main-content { margin-left: 280px; padding: 40px; }
+        .admin-card { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .table-container { background: white; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #004d00; color: white; padding: 15px; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
+        .btn-csv { background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; float: right; }
+    </style>
+</head>
+<body>
+
+<!-- Unified Sidebar Menu -->
+<div class="sidebar">
+    <h2>MULLAH ADMIN</h2>
+    <div class="menu-container">
+        <a href="admin.html" class="menu-item">Dashboard Overview</a>
+        <!-- Added AgriVet Shop menu link option below Dashboard Overview -->
+        <a href="agrivet-shop.html" class="menu-item">Mullah AgriVet Shop</a>
+        <a href="products.html" class="menu-item">Manage Inventory</a>
+        <a href="customers.html" class="menu-item">Customers List</a>
+        <a href="sales.html" class="menu-item active">Finance & Sales</a>
+        <a href="consultancy.html" class="menu-item">Service Requests</a>
+        <a href="logistics.html" class="menu-item">Logistics & Delivery</a>
+        <a href="settings.html" class="menu-item">System Settings</a>
+    </div>
+    <a href="../index.html" class="menu-item" style="color: #ff8a80; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">Logout Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="admin-card">
+        <button class="btn-csv" onclick="downloadCSV()">Download Financial Statement (CSV)</button>
+        <h2 style="color: #004d00; margin-top: 0;">Financial Statement & Ledger</h2>
+        
+        <div class="table-container">
+            <table id="financeTable">
+                <thead>
+                    <tr><th>Date</th><th>Description</th><th>Category</th><th>Type</th><th>Amount (RWF)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>10/05/2026</td><td>Pig Starter Sale</td><td>Income</td><td><b style="color:green;">+</b></td><td>17,500</td></tr>
+                    <tr><td>09/05/2026</td><td>Fuel for Delivery Truck</td><td>Logistics</td><td><b style="color:red;">-</b></td><td>45,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function downloadCSV() {
+        let csvContent = "data:text/csv;charset=utf-8,Date,Description,Category,Type,Amount\n";
+        let rows = document.querySelectorAll("#financeTable tr");
+        for (let i = 1; i < rows.length; i++) {
+            let row = [], cols = rows[i].querySelectorAll("td");
+            for (let j = 0; j < cols.length; j++) row.push(cols[j].innerText.replace("+","").replace("-",""));
+            csvContent += row.join(",") + "\n";
+        }
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Mullah_Agrihub_Finance.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>

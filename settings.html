@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Admin - System Settings</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.85), rgba(0, 40, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed;
+            display: flex;
+        }
+
+        /* Unified Sidebar Navigation Layout */
+        .sidebar { width: 260px; height: 100vh; background: #002d00; position: fixed; left: 0; top: 0; color: white; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .sidebar h2 { font-size: 22px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; color: white; }
+        
+        .menu-container { flex-grow: 1; overflow-y: auto; }
+        .menu-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; color: #ddd; text-decoration: none; display: block; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.1); border-radius: 5px; color: white; }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 40px;
+            width: calc(100% - 280px);
+            box-sizing: border-box;
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+        }
+
+        .admin-card h2 { margin-top: 0; color: #004d00; }
+
+        .settings-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        /* Profile Left Section */
+        .profile-section {
+            text-align: center;
+            border-right: 1px solid #eee;
+            padding-right: 40px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #004d00;
+            color: white;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            object-fit: cover;
+            border: 3px solid #81c784;
+        }
+
+        .file-input-wrapper {
+            margin-top: 15px;
+        }
+
+        /* Forms Right Section */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .btn-update {
+            background-color: #004d00;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-update:hover {
+            background-color: #2e7d32;
+        }
+
+        .security-section {
+            border-top: 2px dashed #eee;
+            padding-top: 30px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Unified Sidebar Menu -->
+<div class="sidebar">
+    <h2>MULLAH ADMIN</h2>
+    <div class="menu-container">
+        <a href="admin.html" class="menu-item">Dashboard Overview</a>
+        <a href="agrivet-shop.html" class="menu-item">Mullah AgriVet Shop</a>
+        <a href="products.html" class="menu-item">Manage Inventory</a>
+        <a href="customers.html" class="menu-item">Customers List</a>
+        <a href="sales.html" class="menu-item">Finance & Sales</a>
+        <a href="consultancy.html" class="menu-item">Service Requests</a>
+        <a href="logistics.html" class="menu-item">Logistics & Delivery</a>
+        <a href="settings.html" class="menu-item active">System Settings</a>
+    </div>
+    <a href="../index.html" class="menu-item" style="color: #ff8a80; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">Logout Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="admin-card">
+        <h2>System Settings & Profile</h2>
+        <p style="color: #666;">Manage your platform credentials and agribusiness info.</p>
+
+        <div class="settings-container">
+            
+            <div class="profile-section">
+                <img id="profilePreview" class="profile-img" src="https://via.placeholder.com/120" alt="AM">
+                <h3 style="margin: 10px 0 5px 0;" id="displayAdminName">Admin Manager</h3>
+                <p style="margin: 0 0 20px 0; color: #777; font-size: 14px;">Mullah Hub Master</p>
+                
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="previewAndPrepareFile()">
+                    <button type="button" class="btn-update" style="background:#555; font-size:12px; padding:8px 15px;" onclick="document.getElementById('fileInput').click()">Choose Photo</button>
+                    <button type="button" class="btn-update" style="font-size:12px; padding:8px 15px; margin-top:10px; display:block; width:100%;" onclick="saveProfilePhoto()">Update Profile</button>
+                </div>
+            </div>
+
+            <div>
+                <form id="companySettingsForm" onsubmit="saveCompanyInfo(event)">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="compName" value="Mullah Agribusiness Hub" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Email</label>
+                        <input type="email" id="compEmail" value="info@mullahagrihub.rw" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+                        <input type="text" id="compPhone" value="+250 788 000 000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Headquarters Address</label>
+                        <input type="text" id="compAddress" value="Kirehe, Eastern Province, Rwanda" required>
+                    </div>
+                    <button type="submit" class="btn-update">Save Company Info</button>
+                </form>
+
+                <div class="security-section">
+                    <h3 style="color: #c62828; margin-top: 0;">Security Settings (Hindura Password)</h3>
+                    <form id="securityForm" onsubmit="changePassword(event)">
+                        <div class="form-group">
+                            <label>Current Password (Iyamaherezo)</label>
+                            <input type="password" id="currentPass" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Password (Inshya)</label>
+                            <input type="password" id="newPass" placeholder="Enter new password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password (Subiramo inshya)</label>
+                            <input type="password" id="confirmNewPass" placeholder="Confirm new password" required>
+                        </div>
+                        <button type="submit" class="btn-update" style="background-color: #c62828;">Update Password</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedImageBase64 = "";
+
+    window.onload = function() {
+        const savedCompany = JSON.parse(localStorage.getItem('mullahCompanySettings'));
+        if (savedCompany) {
+            document.getElementById('compName').value = savedCompany.name;
+            document.getElementById('compEmail').value = savedCompany.email;
+            document.getElementById('compPhone').value = savedCompany.phone;
+            document.getElementById('compAddress').value = savedCompany.address;
+            document.getElementById('displayAdminName').innerText = savedCompany.name;
+        }
+
+        const savedPhoto = localStorage.getItem('mullahAdminPhoto');
+        if (savedPhoto) {
+            document.getElementById('profilePreview').src = savedPhoto;
+        }
+
+        if (!localStorage.getItem('mullahAdminPassword')) {
+            localStorage.setItem('mullahAdminPassword', 'admin123');
+        }
+    };
+
+    function previewAndPrepareFile() {
+        const preview = document.getElementById('profilePreview');
+        const file = document.getElementById('fileInput').files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;
+            selectedImageBase64 = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function saveProfilePhoto() {
+        if (!selectedImageBase64) {
+            alert("Please choose a new profile photo before clicking update.");
+            return;
+        }
+        localStorage.setItem('mullahAdminPhoto', selectedImageBase64);
+        alert("🎉 Profile photo updated successfully!");
+    }
+
+    function saveCompanyInfo(event) {
+        event.preventDefault();
+        const companyData = {
+            name: document.getElementById('compName').value,
+            email: document.getElementById('compEmail').value,
+            phone: document.getElementById('compPhone').value,
+            address: document.getElementById('compAddress').value
+        };
+        localStorage.setItem('mullahCompanySettings', JSON.stringify(companyData));
+        document.getElementById('displayAdminName').innerText = companyData.name;
+        alert("🎉 Company profile parameters updated successfully!");
+    }
+
+    function changePassword(event) {
+        event.preventDefault();
+
+        const currentPassInput = document.getElementById('currentPass').value;
+        const newPassInput = document.getElementById('newPass').value;
+        const confirmNewPassInput = document.getElementById('confirmNewPass').value;
+
+        const realPassword = localStorage.getItem('mullahAdminPassword');
+
+        if (currentPassInput !== realPassword) {
+            alert("❌ Current account credential validation failed. Please check your password.");
+            return;
+        }
+
+        if (newPassInput !== confirmNewPassInput) {
+            alert("❌ New credential parameters do not match.");
+            return;
+        }
+
+        if (newPassInput === realPassword) {
+            alert("⚠️ New authentication key cannot mirror the existing system configuration.");
+            return;
+        }
+
+        localStorage.setItem('mullahAdminPassword', newPassInput);
+        alert("🚀 Authentication credentials modified successfully!");
+        
+        document.getElementById('securityForm').reset();
+    }
+</script>
+
+</body>
+</html>

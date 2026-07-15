@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success - Mullah Agrihub</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0; background-color: #f4f9f4;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        .success-card {
+            background: white; width: 500px; padding: 40px; border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); text-align: center;
+            border-top: 15px solid #2e7d32;
+        }
+
+        .check-icon {
+            width: 80px; height: 80px; background: #e8f5e9; color: #2e7d32;
+            font-size: 50px; line-height: 80px; border-radius: 50%;
+            margin: 0 auto 20px; display: inline-block;
+        }
+
+        h2 { color: #004d00; margin-bottom: 10px; }
+        p { color: #666; line-height: 1.6; margin-bottom: 30px; }
+
+        .timer-box {
+            background: #f1f8e9; padding: 20px; border-radius: 15px;
+            border: 2px dashed #81c784; margin-bottom: 30px;
+        }
+        .timer-label { font-size: 13px; color: #1b5e20; font-weight: bold; text-transform: uppercase; }
+        .countdown { font-size: 32px; font-weight: bold; color: #2e7d32; margin-top: 5px; }
+
+        .btn-home {
+            background: #004d00; color: white; text-decoration: none;
+            padding: 15px 30px; border-radius: 10px; font-weight: bold;
+            display: inline-block; transition: 0.3s;
+        }
+        .btn-home:hover { background: #2e7d32; }
+
+        .contact-info { margin-top: 30px; font-size: 13px; color: #888; }
+    </style>
+</head>
+<body>
+
+<div class="success-card">
+    <div class="check-icon">✓</div>
+    <h2>Murakoze Cyane!</h2>
+    <p>Komande yanyu yakiriwe neza muri <b>Mullah Agribusiness Hub</b>. Igiye gutegurwa no kugezwa mu rugo vuba bishoboka.</p>
+
+    <div class="timer-box">
+        <div class="timer-label">Igihe gisigaye ngo ibyo mwatumije bihageze:</div>
+        <div class="countdown" id="timer">02:59:59</div>
+    </div>
+
+    <a href="index.html" class="btn-home">Subira ku Iduka / Back to Shop</a>
+
+    <div class="contact-info">
+        Mufite ikibazo? Hamagara: +250 787953095/0786663815 <br>
+        Email: mullahagrihub2026@gmail.com
+    </div>
+</div>
+
+<script>
+    let time = 3 * 60 * 60; // Izamara amasaha 3 isubira inyuma
+    const timerElement = document.getElementById('timer');
+
+    function updateTimer() {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+
+        timerElement.innerHTML = 
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (time > 0) {
+            time--;
+        } else {
+            timerElement.innerHTML = "Ibintu byageze mu rugo!";
+        }
+    }
+
+    setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>

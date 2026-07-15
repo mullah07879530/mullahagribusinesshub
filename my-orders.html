@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - My Orders & Invoices</title>
+    <style>
+        body { 
+            font-family: 'Times New Roman', Times, serif; margin: 0; display: flex; min-height: 100vh; 
+            background: linear-gradient(rgba(244, 249, 244, 0.85), rgba(244, 249, 244, 0.85)), url('https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .sidebar { width: 280px; background-color: #002e00; color: white; padding-top: 30px; border-right: 2px solid #001a00; flex-shrink: 0; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu li a { display: block; padding: 15px 25px; color: #b3ffb3; text-decoration: none; font-size: 16px; border-bottom: 1px solid #004d00; }
+        .sidebar-menu li a:hover { background-color: #004d00; color: white; }
+        .sidebar-menu li.active a { background-color: #004d00; color: white; font-weight: bold; border-radius: 4px; margin: 5px 10px; padding: 12px 15px; }
+        .exit-portal { color: #ff6666 !important; margin-top: 40px; font-weight: bold; }
+
+        .main-content { flex: 1; padding: 30px; box-sizing: border-box; }
+        header { background-color: #004d00; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; margin-bottom: 30px; }
+        .section-title { color: #004d00; border-bottom: 2px solid #004d00; padding-bottom: 5px; margin-top: 30px; font-size: 20px; }
+        .order-card { background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 20px; border: 1px solid #ddd; margin-top: 15px; max-width: 800px; position: relative; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-approved { background-color: #d4edda; color: #155724; }
+        
+        .invoice-details { background: #fff; padding: 15px; border-radius: 5px; border: 1px dashed #004d00; margin-top: 10px; font-size: 14px; }
+        
+        /* Action buttons layout */
+        .invoice-actions { display: flex; justify-content: flex-end; margin-top: 15px; }
+        .btn-download { background-color: #2e7d32; color: white; border: none; padding: 8px 16px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 13px; }
+        .btn-download:hover { background-color: #002e00; }
+
+        /* PRINT CONFIGURATION: Hides everything else during invoice PDF download */
+        @media print {
+            body, .sidebar, header, .section-title, .invoice-actions, .status-badge { display: none !important; }
+            .main-content { padding: 0; }
+            .order-card { border: none; box-shadow: none; background: white; padding: 0; max-width: 100%; display: none !important; }
+            /* Only show the single active printable card card */
+            .order-card.printing-now { display: block !important; border: 2px solid #004d00; padding: 25px; border-radius: 10px; }
+            .order-header { border-bottom: 2px solid #004d00; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #004d00;">
+        <h3 style="color: white; margin: 0; font-size: 20px;">MULLAH AGRIHUB</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="client-dashboard.html">Dashboard Home</a></li>
+        <li><a href="client-shop.html">Shop / Store</a></li>
+        <li><a href="request-services.html">Request Advisory/Vet</a></li>
+        <li class="active"><a href="my-orders.html">My Orders & Invoices</a></li>
+        <li><a href="profile-settings.html">My Profile Settings</a></li>
+        <li><a href="index.html" class="exit-portal">Exit Portal</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <header>
+        <div><b>Requested Services & Orders List</b></div>
+        <div>Client Name: <b id="clientNameHeader" style="color: #b3ffb3;">Farmer</b></div>
+    </header>
+
+    <div class="section-title">🩺 Requested Veterinary & Advisory Services</div>
+    <div id="servicesContainer"></div>
+
+    <div class="section-title">🌾 Shop Purchase History</div>
+    <div id="productsContainer"></div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const savedName = localStorage.getItem('registeredName') || "Mullah Client";
+        document.getElementById('clientNameHeader').innerText = savedName;
+
+        renderServiceRequests(savedName);
+        renderProductOrders(savedName);
+    });
+
+    function renderServiceRequests(clientName) {
+        const container = document.getElementById('servicesContainer');
+        const lastRequest = localStorage.getItem('lastMullahServiceRequest');
+        
+        if (!lastRequest) {
+            container.innerHTML = `
+                <div class="order-card" id="invoice-srv-default">
+                    <div class="order-header">
+                        <span style="font-weight:bold; color:#004d00;">SRV-9482 (CODE)</span>
+                        <span class="status-badge status-pending">Pending / Processing</span>
+                    </div>
+                    <div class="invoice-details">
+                        <p style="margin: 5px 0; font-size: 16px; color:#002e00;"><b>MULLAH AGRIHUB OFFICIAL INVOICE</b></p>
+                        <hr style="border: 0; border-top: 1px solid #eee;">
+                        <p style="margin: 3px 0;"><b>Client Name:</b> ${clientName}</p>
+                        <p style="margin: 3px 0;"><b>Service Type:</b> Veterinary Service (Advisory)</p>
+                        <p style="margin: 3px 0;"><b>Description / Details:</b> Consultation Questionze / Medical Advice</p>
+                        <p style="margin: 3px 0; color: #e65100; font-weight: bold;"><b>Amount Paid:</b> 25,000 RWF</p>
+                    </div>
+                    <div class="invoice-actions">
+                        <button class="btn-download" onclick="downloadInvoicePDF('invoice-srv-default')">⬇ Download Invoice</button>
+                    </div>
+                </div>`;
+            return;
+        }
+        
+        const data = JSON.parse(lastRequest);
+        container.innerHTML = `
+            <div class="order-card" id="invoice-srv-dynamic">
+                <div class="order-header">
+                    <span style="font-weight:bold; color:#004d00;">SRV-${Math.floor(1000 + Math.random() * 9000)}</span>
+                    <span class="status-badge status-pending">${data.status}</span>
+                </div>
+                <div class="invoice-details">
+                    <p style="margin: 5px 0; font-size: 16px; color:#002e00;"><b>MULLAH AGRIHUB OFFICIAL INVOICE</b></p>
+                    <hr style="border: 0; border-top: 1px solid #eee;">
+                    <p style="margin: 3px 0;"><b>Client Name:</b> ${clientName}</p>
+                    <p style="margin: 3px 0;"><b>Date:</b> ${data.date}</p>
+                    <p style="margin: 3px 0;"><b>Service Type:</b> ${data.serviceType}</p>
+                    <p style="margin: 3px 0;"><b>Description:</b> ${data.description}</p>
+                    <p style="margin: 3px 0; color: #e65100; font-weight: bold;"><b>Amount Paid:</b> Account Cleared</p>
+                </div>
+                <div class="invoice-actions">
+                    <button class="btn-download" onclick="downloadInvoicePDF('invoice-srv-dynamic')">⬇ Download Invoice</button>
+                </div>
+            </div>`;
+    }
+
+    function renderProductOrders(clientName) {
+        const container = document.getElementById('productsContainer');
+        const lastCart = localStorage.getItem('lastMullahCartOrder');
+        
+        if (!lastCart) {
+            container.innerHTML = `
+                <div class="order-card" id="invoice-prod-default">
+                    <div class="order-header">
+                        <span style="font-weight:bold; color:#004d00;">MLH-8492 (CODE)</span>
+                        <span class="status-badge status-approved">Approved</span>
+                    </div>
+                    <div class="invoice-details">
+                        <p style="margin: 5px 0; font-size: 16px; color:#002e00;"><b>MULLAH AGRIHUB OFFICIAL INVOICE</b></p>
+                        <hr style="border: 0; border-top: 1px solid #eee;">
+                        <p style="margin: 3px 0;"><b>Client Name:</b> ${clientName}</p>
+                        <p style="margin: 3px 0;"><b>Purchased Item:</b> Layer Feeds (Poultry Feed)</p>
+                        <p style="margin: 3px 0;"><b>Specification:</b> 5 Bags</p>
+                        <p style="margin: 3px 0; color: #e65100; font-weight: bold;"><b>Amount Paid:</b> 115,000 RWF</p>
+                    </div>
+                    <div class="invoice-actions">
+                        <button class="btn-download" onclick="downloadInvoicePDF('invoice-prod-default')">⬇ Download Invoice</button>
+                    </div>
+                </div>`;
+            return;
+        }
+        
+        const data = JSON.parse(lastCart);
+        container.innerHTML = `
+            <div class="order-card" id="invoice-prod-dynamic">
+                <div class="order-header">
+                    <span style="font-weight:bold; color:#004d00;">MLH-${Math.floor(1000 + Math.random() * 9000)}</span>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+                <div class="invoice-details">
+                    <p style="margin: 5px 0; font-size: 16px; color:#002e00;"><b>MULLAH AGRIHUB OFFICIAL INVOICE</b></p>
+                    <hr style="border: 0; border-top: 1px solid #eee;">
+                    <p style="margin: 3px 0;"><b>Client Name:</b> ${clientName}</p>
+                    <p style="margin: 3px 0;"><b>Items Summary:</b> ${data.itemsSummary}</p>
+                    <p style="margin: 3px 0; color: #e65100; font-weight: bold;"><b>Total Amount Paid:</b> ${data.totalAmount} RWF</p>
+                </div>
+                <div class="invoice-actions">
+                    <button class="btn-download" onclick="downloadInvoicePDF('invoice-prod-dynamic')">⬇ Download Invoice</button>
+                </div>
+            </div>`;
+    }
+
+    // Function to handle printing/saving a clean individual card as a PDF
+    function downloadInvoicePDF(cardId) {
+        const targetCard = document.getElementById(cardId);
+        if(targetCard) {
+            targetCard.classList.add('printing-now');
+            window.print();
+            targetCard.classList.remove('printing-now');
+        }
+    }
+</script>
+
+</body>
+</html>

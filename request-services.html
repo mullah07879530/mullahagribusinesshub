@@ -1,0 +1,228 @@
+ <!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - Request Advisory & Vet</title>
+    <style>
+        body { 
+            font-family: 'Times New Roman', Times, serif; 
+            margin: 0; 
+            display: flex; 
+            min-height: 100vh; 
+            background: linear-gradient(rgba(244, 249, 244, 0.85), rgba(244, 249, 244, 0.85)), 
+                        url('https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .sidebar { 
+            width: 280px; 
+            background-color: #002e00; 
+            color: white; 
+            padding-top: 30px; 
+            border-right: 2px solid #001a00;
+            flex-shrink: 0;
+        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu li a { display: block; padding: 15px 25px; color: #b3ffb3; text-decoration: none; font-size: 16px; border-bottom: 1px solid #004d00; transition: 0.3s; }
+        .sidebar-menu li a:hover { background-color: #004d00; color: white; }
+        .sidebar-menu li.active a { background-color: #004d00; color: white; font-weight: bold; border-radius: 4px; margin: 5px 10px; padding: 12px 15px; }
+        .exit-portal { color: #ff6666 !important; margin-top: 40px; font-weight: bold; }
+
+        .main-content { flex: 1; padding: 30px; box-sizing: border-box; }
+        header { background-color: #004d00; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; margin-bottom: 30px; }
+        
+        .welcome-box { background: rgba(232, 245, 233, 0.95); padding: 20px; border-radius: 12px; border-left: 8px solid #2e7d32; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        
+        .emergency-box { 
+            background: #fff5f5; 
+            border: 2px dashed #cc0000; 
+            border-left: 8px solid #cc0000; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 25px; 
+            max-width: 700px;
+            box-sizing: border-box;
+        }
+        .emergency-title { color: #cc0000; margin: 0 0 10px 0; font-size: 18px; font-weight: bold; display: flex; align-items: center; }
+        .emergency-numbers { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
+        .phone-btn { 
+            background: #cc0000; 
+            color: white; 
+            text-decoration: none; 
+            padding: 8px 15px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 15px; 
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .phone-btn:hover { background: #990000; transform: translateY(-2px); }
+
+        .service-form { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; max-width: 700px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; color: #004d00; margin-bottom: 8px; font-size: 15px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 15px; background: white; }
+        textarea.form-control { height: 100px; resize: none; }
+        
+        .btn-submit { background: #2e7d32; color: white; border: none; padding: 14px 20px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-submit:hover { background: #1b5e20; }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #004d00;">
+        <h3 style="color: white; margin: 0; font-size: 20px;">MULLAH AGRIHUB</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="client-dashboard.html">Dashboard Home</a></li>
+        <li><a href="client-shop.html">Shop / Iguriro</a></li>
+        <li class="active"><a href="request-services.html">Request Advisory/Vet</a></li>
+        <li><a href="my-orders.html">My Orders & Invoices</a></li>
+        <li><a href="profile-settings.html">My Profile Settings</a></li>
+        <li><a href="logout.html" class="exit-portal">Exit Portal</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <header>
+        <div><b>Welcome, Farmer</b></div>
+        <div>Portal: Active</div>
+    </header>
+
+    <div class="welcome-box">
+        <h2>SERVICE Z'INZOBERES (Veterinary & Agri-Advisory)</h2>
+        <p style="margin: 5px 0 0 0; font-size: 15px; color: #333;">
+            Ukeneye ubuvuzi bw'amatungo cyangwa ubujyanama bw'umushinga mushya? Uzuza fomu hasi hano, inzobere zacu zihite ziguhamagara mu kanya kaka.
+        </p>
+    </div>
+
+    <!-- AGASANDUKU K'IBYIHUTIRWA -->
+    <div class="emergency-box">
+        <div class="emergency-title">MU GIHE UKENEYE MUGANAGA WAMATUNGO CYANGWA UBUJYANAMA BWIHUTIRWA (EMERGENCY)</div>
+        <p style="margin: 0 0 10px 0; font-size: 14px; color: #555; line-height: 1.4;">
+            Niba itungo ryawe rirwaye cyane, cyangwa ukeneye umuganga w'amatungo, kanda kuri imwe mu nimero zikurikira uhite uhamagara:
+        </p>
+        <div class="emergency-numbers">
+            <a href="tel:+250787953095" class="phone-btn">📞 Hamagara: +250 787 953 095</a>
+            <a href="tel:+250784456808" class="phone-btn">📞 Hamagara: +250 784 456 808</a>
+            <a href="tel:+250724340662" class="phone-btn">📞 Hamagara: +250 724 340 662</a>
+        </div>
+    </div>
+
+    <!-- FOMU Y'UMUKIRIYA -->
+    <div class="service-form">
+        <form id="serviceRequestForm" onsubmit="handleServiceSubmit(event)">
+            
+            <div class="form-group">
+                <label>Nomero ya Telefone (Phone Number):</label>
+                <input type="tel" id="clientPhone" class="form-control" placeholder="Urugero: 078XXXXXXX" required>
+            </div>
+
+            <div class="form-group">
+                <label>Aho uherereye (Location / Ahari Ikibazo):</label>
+                <input type="text" id="clientLocation" class="form-control" placeholder="Urugero: Nyagatare, Kirehe, Kigali..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Ubwoko bwa Serivisi ukeneye (Service Type):</label>
+                <select id="serviceCategory" class="form-control" onchange="updateSubCategories()" required>
+                    <option value="">-- Hitamo Icyiciro Gikuru --</option>
+                    <option value="Veterinary">Ubuvuzi bw'Amatungo (Veterinary Services)</option>
+                    <option value="Consultancy">Ubujyanama mu Buhinzi n'Ubworozi (Agri-Consultancy & Advisory)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Icyo wifuza gutunganywa (Specific Request):</label>
+                <select id="serviceSubCategory" class="form-control" required>
+                    <option value="">-- Hitamo serivisi yihariye --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Sobanura neza ikibazo cyangwa umushinga wawe (Description):</label>
+                <textarea id="serviceDetails" class="form-control" placeholder="Andika hano amakuru yose asobanutse afasha inzobere kugusobanukirwa..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Ohereza ubutumwa bwawe (Submit Request)</button>
+        </form>
+    </div>
+</main>
+
+<script>
+    // Gupanga serivisi zose z'ubworozi n'ubuhinzi mu buryo bunoze
+    const servicesData = { 
+        Veterinary: [
+            { value: "Poultry Disease Treatment", text: "Ubuvuzi n'Isubiranyabuzima bw'Inkoko (Poultry Treatment & Disease Control)" },
+            { value: "Artificial Insemination", text: "Gutera Intanga mu Nka (Artificial Insemination - AI)" },
+            { value: "Cattle Vaccination", text: "Gukingira Inka n'Amatungo Magufi (Livestock Vaccination)" },
+            { value: "Dairy Cow Treatment", text: "Ubuvuzi bw'Inka z'Amata (Dairy Cattle Treatment & Mastitis Control)" },
+            { value: "Pig Disease Treatment", text: "Ubuvuzi bw'Ingurube (Pig Treatment & Health Management)" },
+            { value: "Rabbit Health Service", text: "Ubuvuzi n'Ubworozi bw'Inkwavu (Rabbit Management & Health)" },
+            { value: "Emergency Vet Visit", text: "Ubutumwa bwihuse bw'Umuganga w'Amatungo (Emergency Vet Visit)" }
+        ],
+        Consultancy: [
+            { value: "Poultry Layer Setup", text: "Ubujyanama kubworozi bw'Inkoko z'Amagi niz'Inyama (Layers and broilers Farm Setup & Management)" },
+            { value: "Dairy Yield Advisory", text: "Kongera Umusaruro w'Amata n'Ibiryo by'Inka (Dairy Milk Yield Optimization)" },
+            { value: "Aquaculture Tilapia and cat fish Ponds", text: "kubaka Ibyuzi by'amafi n'ibyokurya byayo (Earthen Ponds, Tilapia & cutfish Feeds)" },
+            { value: "Pig Farm Management", text: "Kuvugurura n'Imicungire y'Ingurube (Modern Pig Farm Management)" },
+            { value: "Business Plan Development", text: "Gukora no Gutunganya Imishinga (Agricultural Business Plan Development)" },
+            { value: "Data Analysis Support", text: "Ubujyanama mu Bushakashatsi n'Imibare (Research Data Analysis)" },
+            { value: "Goat Farm Management", text: "Ubujyanama kubworozi bw'Ihene (Modern Goat Farm Management)" }
+        ]
+    };
+
+    function updateSubCategories() {
+        const mainCat = document.getElementById('serviceCategory').value;
+        const subCatSelect = document.getElementById('serviceSubCategory');
+        
+        subCatSelect.innerHTML = '<option value="">-- Hitamo serivisi yihariye --</option>';
+        
+        if (mainCat && servicesData[mainCat]) {
+            servicesData[mainCat].forEach(opt => {
+                subCatSelect.innerHTML += `<option value="${opt.value}">${opt.text}</option>`;
+            });
+        } else {
+            // Niba nta cyiciro gihiswemo, zigaragare zose
+            Object.keys(servicesData).forEach(cat => {
+                servicesData[cat].forEach(opt => {
+                    subCatSelect.innerHTML += `<option value="${opt.value}">${opt.text}</option>`;
+                });
+            });
+        }
+    }
+
+    // Guhita twerekana serivisi zose iyo page igitangira
+    window.onload = updateSubCategories;
+
+    function handleServiceSubmit(event) {
+        event.preventDefault();
+        
+        const phone = document.getElementById('clientPhone').value;
+        const location = document.getElementById('clientLocation').value;
+        const category = document.getElementById('serviceCategory').value;
+        const subCategory = document.getElementById('serviceSubCategory').value;
+        const details = document.getElementById('serviceDetails').value;
+
+        const requestData = {
+            clientPhone: phone,
+            clientLocation: location,
+            serviceType: category + " - " + subCategory,
+            description: details,
+            status: "Pending",
+            date: new Date().toLocaleDateString()
+        };
+
+        localStorage.setItem('lastMullahServiceRequest', JSON.stringify(requestData));
+        
+        alert("Murakoze! Request yanyu yakiriwe neza. Inzobere ya Mullah Agrihub ihite ikuvugisha " + phone);
+        window.location.href = 'my-orders.html';
+    }
+</script>
+
+</body>
+</html>

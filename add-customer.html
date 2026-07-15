@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Admin - Add New Customer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif; margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.8), rgba(0, 40, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed; padding: 40px;
+        }
+        .form-card {
+            background: rgba(255, 255, 255, 0.98); padding: 30px; max-width: 500px;
+            margin: 0 auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #004d00; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-submit { background: #004d00; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; }
+        .btn-submit:hover { background: #2e7d32; }
+        .btn-back { display: block; text-align: center; margin-top: 15px; color: #555; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2 style="color: #004d00; margin-top: 0; text-align: center;">Register New Customer</h2>
+    <form id="customerForm" onsubmit="saveCustomer(event)">
+        <div class="form-group">
+            <label>Full Name (Amazina yombi)</label>
+            <input type="text" id="custName" required placeholder="ex: Ntwari Eric">
+        </div>
+        <div class="form-group">
+            <label>Phone Number (Nomero ya Telefoni)</label>
+            <input type="text" id="custPhone" required placeholder="ex: 0788XXXXXX">
+        </div>
+        <div class="form-group">
+            <label>Location (Aho aturuka)</label>
+            <input type="text" id="custLocation" required placeholder="ex: Nyagatare / Outskirts">
+        </div>
+        <div class="form-group">
+            <label>Profession / Sector (Icyo akora)</label>
+            <select id="custProfession">
+                <option value="Poultry Farmer">Poultry Farmer</option>
+                <option value="Cattle Breeder">Cattle Breeder</option>
+                <option value="Pig Farmer">Pig Farmer</option>
+                <option value="General Farmer">General Farmer</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-submit">Save Customer</button>
+    </form>
+    <a href="customers.html" class="btn-back">← Back to Customers List</a>
+</div>
+
+<script>
+    function saveCustomer(e) {
+        e.preventDefault();
+        
+        // Gufata amakuru yashyizwemo
+        const newCustomer = {
+            name: document.getElementById('custName').value,
+            phone: document.getElementById('custPhone').value,
+            location: document.getElementById('custLocation').value,
+            profession: document.getElementById('custProfession').value,
+            status: 'Active'
+        };
+
+        // Gusoma urutonde rwa kade ruri muli localStorage
+        let currentCustomers = JSON.parse(localStorage.getItem('mullahCustomers')) || [];
+        
+        // Guhita twongeramo uyu mushya
+        currentCustomers.push(newCustomer);
+        
+        // Kongera kubika muli localStorage
+        localStorage.setItem('mullahCustomers', JSON.stringify(currentCustomers));
+        
+        alert("🎉 Umukiriya mushya yanditswe neza muli Sisitemu!");
+        
+        // Guhita tusubira ku rutonde rw'abakiriya
+        window.location.href = 'customers.html';
+    }
+</script>
+
+</body>
+</html>

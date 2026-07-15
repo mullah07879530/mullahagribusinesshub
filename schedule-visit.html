@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Admin - Full Rwanda Locations & Staff</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.8), rgba(0, 40, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed; background-position: center;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;
+        }
+
+        .schedule-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            width: 580px; border-top: 10px solid #004d00;
+        }
+
+        h2 { color: #004d00; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .form-row { display: flex; gap: 15px; margin-bottom: 12px; }
+        .form-group { flex: 1; margin-bottom: 12px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; font-size: 13px; }
+        
+        input, select, textarea { 
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px;
+        }
+        
+        .address-box {
+            background: #f1f8f1; padding: 15px; border-radius: 10px; border: 1px solid #c8e6c9; margin-bottom: 15px;
+        }
+        .address-box h4 { margin: 0 0 10px 0; color: #1b5e20; font-size: 14px; }
+
+        .btn-confirm {
+            background: #004d00; color: white; border: none; padding: 15px; width: 100%; 
+            border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s;
+        }
+        .btn-confirm:hover { background: #2e7d32; transform: translateY(-2px); }
+
+        optgroup { font-style: normal; font-weight: bold; color: #1b5e20; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div class="schedule-card">
+    <h2>Schedule Technical Visit</h2>
+    <form action="consultancy.html">
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label>Visit Date</label>
+                <input type="date" required>
+            </div>
+            <div class="form-group">
+                <label>Arrival Time</label>
+                <input type="time" required>
+            </div>
+        </div>
+
+        <div class="address-box">
+            <h4>📍 Location Details</h4>
+            <div class="form-group">
+                <label>Akarere (District)</label>
+                <select required>
+                    <option value="">-- Hitamo Akarere --</option>
+                    <optgroup label="Umujyi wa Kigali">
+                        <option>Nyarugenge</option><option>Gasabo</option><option>Kicukiro</option>
+                    </optgroup>
+                    <optgroup label="Iburasirazuba (East)">
+                        <option>Kirehe</option><option>Nyagatare</option><option>Kayonza</option>
+                        <option>Rwamagana</option><option>Ngoma</option><option>Gatsibo</option><option>Bugesera</option>
+                    </optgroup>
+                    <optgroup label="Iburengerazuba (West)">
+                        <option>Rubavu</option><option>Rusizi</option><option>Karongi</option>
+                        <option>Nyamasheke</option><option>Rutsiro</option><option>Ngororero</option><option>Nyabihu</option>
+                    </optgroup>
+                    <optgroup label="Amajyaruguru (North)">
+                        <option>Musanze</option><option>Burera</option><option>Gicumbi</option><option>Rulindo</option><option>Gakenke</option>
+                    </optgroup>
+                    <optgroup label="Amajyepfo (South)">
+                        <option>Huye</option><option>Nyanza</option><option>Gisagara</option><option>Nyamagabe</option>
+                        <option>Nyaruguru</option><option>Ruhango</option><option>Muhanga</option><option>Kamonyi</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Umurenge</label><input type="text" placeholder="Sector" required></div>
+                <div class="form-group"><label>Akagari</label><input type="text" placeholder="Cell" required></div>
+                <div class="form-group"><label>Umudugudu</label><input type="text" placeholder="Village" required></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Assign Consultant / Officer</label>
+            <select required>
+                <option value="">-- Hitamo Umukozi --</option>
+                <option>Main Admin (Mullah)</option>
+                <optgroup label="Field Officers">
+                    <option>Field Officer - East (Kirehe/Nyagatare)</option>
+                    <option>Field Officer - Kigali Area</option>
+                    <option>Field Officer - North/West</option>
+                    <option>Field Officer - South</option>
+                </optgroup>
+                <optgroup label="Specialists">
+                    <option>Veterinary Doctor (Amatungo)</option>
+                    <option>Agronomist (Ubuhinzi)</option>
+                    <option>Project Planner (Imishinga)</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Instructions for the Visit</label>
+            <textarea rows="2" placeholder="Andika ibigomba gukorwa cyangwa ibikoresho byo kwitwaza..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-confirm">Save & Notify Staff</button>
+    </form>
+
+    <a href="consultancy.html" class="back-link">← Back to Consultancy</a>
+</div>
+
+</body>
+</html>

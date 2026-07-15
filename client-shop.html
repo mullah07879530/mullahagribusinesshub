@@ -1,0 +1,319 @@
+ <!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - User Dashboard</title>
+    <style>
+        body { font-family: 'Times New Roman', Times, serif; margin: 0; background-color: #f4f9f4; }
+        header { 
+            background-color: #004d00; color: white; padding: 15px 40px; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .header-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        
+        .welcome-box { 
+            background: #e8f5e9; padding: 30px; border-radius: 15px; 
+            border-left: 10px solid #2e7d32; margin-bottom: 30px; 
+        }
+        h1, h2 { color: #004d00; margin-top: 0; }
+
+        .location-section { 
+            border: 2px solid #2e7d32; border-radius: 15px; padding: 20px; 
+            background: white; margin-bottom: 30px; 
+        }
+        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px; }
+        @media (max-width: 768px) { .input-group { grid-template-columns: 1fr; } }
+        
+        .location-section input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; }
+
+        .category-section { background: white; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        .category-header {
+            background-color: #004d00; color: white; padding: 20px 25px; 
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            user-select: none; transition: background 0.3s;
+        }
+        .category-header:hover { background-color: #003300; }
+        
+        .category-content { padding: 25px; display: none; background: #ffffff; }
+        
+        .feed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .feed-card { 
+            border: 1px solid #eee; border-radius: 12px; padding: 20px; 
+            text-align: center; background: #fff; transition: 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .feed-card:hover { border-color: #2e7d32; transform: translateY(-5px); }
+        
+        .price-tag { background: #004d00; color: white; padding: 6px 15px; border-radius: 20px; font-weight: bold; margin-bottom: 15px; display: inline-block; }
+        .negotiable-tag { background: #f39c12; color: white; padding: 6px 15px; border-radius: 20px; font-weight: bold; margin-bottom: 15px; display: inline-block; }
+        
+        .calc-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 5px; text-align: center; font-family: inherit; font-size: 16px; box-sizing: border-box; }
+        .total-display { font-weight: bold; color: #1b5e20; margin-bottom: 15px; background: #f1f8e9; padding: 8px; border-radius: 5px; font-size: 14px; }
+        
+        .buy-btn { background: #2e7d32; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .buy-btn:hover { background: #1b5e20; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo"><b>MULLAH AGRIHUB</b></div>
+    <div class="header-links">
+        <b>Welcome, Farmer</b> | 
+        <a href="client-dashboard.html" style="background-color: #2e7d32; padding: 5px 10px; border-radius: 5px;">Go to Dashboard</a> | 
+        <a href="index.html">log out</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="welcome-box">
+        <h1>MULLAH AGRIBUSINESS PRODUCTS</h1>
+        <p>Isoko ryawe rya mbere ry'iryo by'Amatungo (Layers & Broilers, Ingurube), Ifu y'igikoma ikungahaye ku ntungamubiri (Nutri Porridge), ndetse na Serivisi z'Inzobere (Veterinary & Consultancy). Kanda ku cyiciro cy'ibyo ushaka hano hasi, uzihitemo maze ukande <b>buy now</b> cyangwa <b>book service</b>.</p>
+    </div>
+
+    <div class="location-section">
+        <label style="color:#004d00; font-weight:bold;">UZUZA AMAKURU YAWE (Your Information):</label>
+        <div class="input-group">
+            <div>
+                <span style="font-size: 14px; color: #555;">Aho uherereye (Location):</span>
+                <input type="text" id="userLocation" placeholder="Urugero: Kirehe, Nyamugali, Kigali...">
+            </div>
+            <div>
+                <span style="font-size: 14px; color: #555;">Nomero ya Telefone (Phone Number):</span>
+                <input type="tel" id="userPhone" placeholder="Urugero: 078XXXXXXX">
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. Poultry: Layers -->
+    <div class="category-section">
+        <div class="category-header" onclick="toggleCategory(this)">
+            <span>Poultry: Layers (Amagi)</span>
+            <span class="icon">▼</span>
+        </div>
+        <div class="category-content">
+            <div class="feed-grid">
+                <div class="feed-card">
+                    <h4>Starter Feed</h4><div class="price-tag">350 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 350)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Layers Starter', 350, this)">Buy Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Grower Feed</h4><div class="price-tag">450 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 450)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Layers Grower', 450, this)">Buy Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Layers Feed</h4><div class="price-tag">650 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 650)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Layers Feed', 650, this)">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Poultry: Broilers -->
+    <div class="category-section">
+        <div class="category-header" onclick="toggleCategory(this)">
+            <span>Poultry: Broilers (Inyama)</span>
+            <span class="icon">▼</span>
+        </div>
+        <div class="category-content">
+            <div class="feed-grid">
+                <div class="feed-card">
+                    <h4>Starter Feed</h4><div class="price-tag">450 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 450)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Broiler Starter', 450, this)">Buy Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Grower Feed</h4><div class="price-tag">350 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 350)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Broiler Grower', 350, this)">Buy Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Finisher Feed</h4><div class="price-tag">450 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 450)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Broiler Finisher', 450, this)">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Pig Feeds -->
+    <div class="category-section">
+        <div class="category-header" onclick="toggleCategory(this)">
+            <span>Pig Feeds (Ingurube)</span>
+            <span class="icon">▼</span>
+        </div>
+        <div class="category-content">
+            <div class="feed-grid">
+                <div class="feed-card">
+                    <h4>Starter Feed</h4><div class="price-tag">350 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 350)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Pig Starter', 350, this)">Buy Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Grower Feed</h4><div class="price-tag">460 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 460)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Pig Grower', 460, this)">Buy Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Finisher Feed</h4><div class="price-tag">350 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 350)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Pig Finisher', 350, this)">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Professional Services -->
+    <div class="category-section">
+        <div class="category-header" onclick="toggleCategory(this)">
+            <span>Professional Services</span>
+            <span class="icon">▼</span>
+        </div>
+        <div class="category-content">
+            <div class="feed-grid">
+                <div class="feed-card">
+                    <h4>Veterinary Service</h4>
+                    <div class="negotiable-tag">Negotiable</div>
+                    <textarea class="calc-input" style="height: 60px; resize:none;" placeholder="Sobanura ikibazo ufite..."></textarea>
+                    <div class="total-display">Igiciro: Kuzumvikana</div>
+                    <button class="buy-btn" style="background: #f39c12;" onclick="redirectToServices()">Book Service</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Agri-Consultancy</h4>
+                    <div class="negotiable-tag">Negotiable</div>
+                    <textarea class="calc-input" style="height: 60px; resize:none;" placeholder="Sobanura umushinga wawe..."></textarea>
+                    <div class="total-display">Igiciro: Kuzumvikana</div>
+                    <button class="buy-btn" style="background: #f39c12;" onclick="redirectToServices()">Request Help</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Nutri Porridge products-->
+    <div class="category-section">
+        <div class="category-header" onclick="toggleCategory(this)">
+            <span>Nutri Porridge</span>
+            <span class="icon">▼</span>
+        </div>
+        <div class="category-content">
+            <div class="feed-grid">
+                <div class="feed-card">
+                    <h4>Nutrigold</h4>
+                    <p style="font-size: 13px; color: #666; margin: 0 0 10px 0;">Ifasha abana bato naba mama bonsa</p>
+                    <div class="price-tag">1,200 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 1200)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Nutrigold Porridge', 1200, this)">Order Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Grow Plus Blend</h4>
+                    <p style="font-size: 13px; color: #666; margin: 0 0 10px 0;">Ifasha abana</p>
+                    <div class="price-tag">1,500 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 1500)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Grow Plus Blend Porridge', 1500, this)">Order Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Mama Care Flour</h4>
+                    <p style="font-size: 13px; color: #666; margin: 0 0 10px 0;">Ifasha abamama</p>
+                    <div class="price-tag">1,300 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 1300)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Mama Care Flour Porridge', 1300, this)">Order Now</button>
+                </div>
+                <div class="feed-card">
+                    <h4>Nutri Energy</h4>
+                    <p style="font-size: 13px; color: #666; margin: 0 0 10px 0;">Ifasha abantu bakuze</p>
+                    <div class="price-tag">1,400 RWF/Kg</div>
+                    <input type="number" class="calc-input" placeholder="Shyiramo Kg" oninput="updateLivePrice(this, 1400)">
+                    <div class="total-display">Yose hamwe: <span class="price-sum">0</span> RWF</div>
+                    <button class="buy-btn" onclick="processOrder('Nutri Energy Porridge', 1400, this)">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCategory(headerElement) {
+        const content = headerElement.nextElementSibling;
+        const icon = headerElement.querySelector('.icon');
+        if (content.style.display === "block") {
+            content.style.display = "none";
+            icon.innerText = "▼";
+        } else {
+            content.style.display = "block";
+            icon.innerText = "▲";
+        }
+    }
+
+    function updateLivePrice(inputElement, unitPrice) {
+        const quantity = inputElement.value;
+        const displaySpan = inputElement.parentElement.querySelector('.price-sum');
+        if (quantity > 0) {
+            displaySpan.innerText = (quantity * unitPrice).toLocaleString();
+        } else {
+            displaySpan.innerText = "0";
+        }
+    }
+
+    function redirectToServices() {
+        window.location.href = 'request-services.html';
+    }
+
+    // GAHUNDA YO GUHUZA ISOKO NA CHECKOUT
+    function processOrder(productName, price, buttonElement) {
+        const card = buttonElement.parentElement;
+        const userValue = card.querySelector('.calc-input').value;
+        const locationInput = document.getElementById('userLocation').value;
+        const phoneInput = document.getElementById('userPhone').value;
+        
+        if (userValue.trim() === "" || userValue <= 0) { 
+            alert("Nyamuneka andika ingano y'ibilo (Kg) ushaka kugura!"); 
+            return; 
+        }
+        if (locationInput.trim() === "") { 
+            alert("Nyamuneka banza wandike aho uherereye (Location) hejuru!"); 
+            return; 
+        }
+        if (phoneInput.trim() === "") { 
+            alert("Nyamuneka banza wandike nomero ya telefone yawe hejuru!"); 
+            return; 
+        }
+
+        const calculatedTotal = userValue * price;
+
+        // Kubika amakuru muri localStorage kugira ngo na admin cyangwa orders paji zizayasome
+        const cartOrder = {
+            itemsSummary: productName + " (" + userValue + " Kg)",
+            totalAmount: calculatedTotal.toLocaleString(),
+            location: locationInput,
+            phone: phoneInput,
+            status: "Pending"
+        };
+        
+        localStorage.setItem('lastMullahCartOrder', JSON.stringify(cartOrder));
+        
+        // Guhita yinjira kuri checkout.html itwaye na 'total' muri URL parameter
+        window.location.href = 'checkout.html?total=' + calculatedTotal;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agribusiness Hub - Agriculture & Livestock Services</title>
+    
+    <!-- Meta Tags zifasha Google kubona urubuga rwawe neza (SEO) -->
+    <meta name="description" content="Mullah Agribusiness Hub - Urubuga rwa mbere mu Rwanda rutanga ibiryo by'amatungo by'intatanywa, ubuvuzi bw'amatungo, Nutri Porridge, n'inama z'ubuhinzi n'ubworozi bwa kinyamwuga.">
+    <meta name="keywords" content="Mullah, Agribusiness, Hub, Mullah Agribusiness Hub, Rwanda, Kirehe, Nyagatare, ibiryo by'amatungo, ubuvuzi bw'amatungo, Nutri Porridge, ifu y'igikoma">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; box-sizing: border-box; background-color: #f4f7f4; color: #333;
+        }
+        header {
+            background: linear-gradient(rgba(0, 51, 0, 0.85), rgba(0, 51, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center;
+            color: white; padding: 60px 20px; text-align: center;
+        }
+        header h1 { margin: 0; font-size: 3rem; text-transform: uppercase; letter-spacing: 2px; }
+        header p { margin: 10px 0 0 0; font-size: 1.2rem; opacity: 0.9; }
+        
+        .navbar { background-color: #002800; padding: 15px 20px; display: flex; justify-content: center; gap: 25px; position: relative; }
+        .navbar a { color: #ddd; text-decoration: none; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .navbar a:hover { color: white; }
+        
+        /* Akabuto ka Login gahuye na stil y'urubuga rwawe */
+        .btn-login-nav { background-color: #ffb74d; color: #002800 !important; padding: 5px 15px; border-radius: 5px; font-weight: bold; }
+        .btn-login-nav:hover { background-color: white !important; }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        
+        .welcome-section { text-align: center; margin-bottom: 5px; }
+        .welcome-section h2 { color: #004d00; font-size: 2.2rem; }
+        .welcome-section p { font-size: 1.1rem; color: #555; max-width: 700px; margin: 10px auto; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px; }
+        .service-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #e1ebe1; transition: 0.3s; text-align: center; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .service-card h3 { color: #004d00; margin-top: 15px; font-size: 1.3rem; }
+        .service-card p { color: #666; font-size: 0.95rem; line-height: 1.6; }
+        
+        .btn-action { background-color: #004d00; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; transition: 0.2s; text-decoration: none; display: inline-block; width: 80%; margin-left: auto; margin-right: auto; }
+        .btn-action:hover { background-color: #1b5e20; }
+
+        footer { background-color: #002800; color: #aaa; text-align: center; padding: 20px 0; font-size: 14px; margin-top: 60px; }
+        
+        /* Stil yoroshye y'imbuga nkoranyambambano munsi ya footer */
+        .social-container { margin-top: 15px; }
+        .social-container span { color: #ffb74d; font-weight: bold; margin-right: 10px; }
+        .social-links { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .social-links a { color: #ffffff; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        .social-links a:hover { color: #ffb74d; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Mullah Agribusiness Hub</h1>
+    <p>Urubuga rwa Kinyamwuga rw'Abahinzi, Aborozi, n'Abaguzi B'Icyerekezo</p>
+</header>
+
+<div class="navbar">
+    <a href="index.html">Ahabanza</a>
+    <a href="#services">Serivisi n'Ibicuruzwa Zacu</a>
+    <!-- Akabuto nshya kajyana kuri Login -->
+    <a href="auth.html" class="btn-login-nav">Login / Sign Up</a>
+</div>
+
+<div class="container">
+    <div class="welcome-section">
+        <h2>Muraho neza, Murakaza Neza!</h2>
+        <p>MULLAH AGRIBUSINESS HUB ni company yaje gutanga umusanzu ukomeye mu buhinzi, ubworozi, n'imirire myiza mu Rwanda hitabwa ku biryo by'amatungo, ubuvuzi Bw'amatungo bwizewe, n'ifu y'igikoma ifite intungamubiri zihariye.</p>
+    </div>
+
+    <div class="services-grid" id="services">
+        <!-- Curuzwa 1: Nutri Porridge -->
+        <div class="service-card" style="border: 2px solid #ffb74d;">
+            <div>
+                <h3 style="font-size: 35px; margin: 0;">🥣</h3>
+                <h3 style="color: #e65100;">Nutri Porridge Product</h3>
+                <p>Ifu y'igikoma cy'umwimerere kandi gikize ku ntungamubiri zikomeye. Ni ifu nziza cyane yagenewe gufasha Abana gukura neza, ifasha abamama bonsa kongera amashereka, ndetse n'abantu bakuru ibafasha gukomeza kugira amagara mazima n'imbaraga.</p>
+            </div>
+            <button class="btn-action" style="background-color: #e65100;" onclick="alert('Ushaka guhahira umuryango ifu ya Nutri Porridge? Hamagara cyangwa wandike kuri WhatsApp: 0787953095')">Tumiza Ifu Y'igikoma</button>
+        </div>
+
+        <!-- Serivisi 2: Ibiryo by'amatungo -->
+        <div class="service-card">
+            <div>
+                <h3 style="font-size: 35px; margin: 0;">🌾</h3>
+                <h3>Ibiryo by'Amatungo (Feeds)</h3>
+                <p>Shaka ibiryo binoze kandi bifite intungamubiri zuzuye z'inkoko (Layers & Broilers), ingurube, n'inka z'amata mu bice byose.</p>
+            </div>
+            <button class="btn-action" onclick="alert('Kugura byihuse, hamagara cyangwa wandike kuri WhatsApp: 0787953095')">Gura Ibiryo</button>
+        </div>
+
+        <!-- Serivisi 3: Ubuvuzi -->
+        <div class="service-card">
+            <div>
+                <h3 style="font-size: 35px; margin: 0;">🩺</h3>
+                <h3>Ubuvuzi bw'Amatungo (Veterinary)</h3>
+                <p>Abavuzi b'amatungo bafite ubunararibonye biteguye kuza kuvura, gukingira, no gukurikirana ubuzima bw'amatungo yawe muburyo bwa kinyamwuga.</p>
+            </div>
+            <button class="btn-action" onclick="alert('Ushaka muganga w\'amatungo wihuse? Hamagara: 0787953095')">Saba Muganga</button>
+        </div>
+
+        <!-- Serivisi 4: Inama -->
+        <div class="service-card">
+            <div>
+                <h3 style="font-size: 35px; margin: 0;">📊</h3>
+                <h3>Inama n'Imishinga (Consultancy)</h3>
+                <p>Tugufasha gukora inyigo z'imishinga y'ubuhinzi n'ubworozi (Poultry, Dairy & Pigs), gutunganya ibyuzi by'amafi, n'amahugurwa y'abakozi.</p>
+            </div>
+            <button class="btn-action" onclick="alert('Saba inama cyangwa gusurwa n\'inzobere: 0787953095')">Saba Inama</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Mullah Agribusiness Hub. All Rights Reserved. Designed for Rwandan Society.</p>
+    
+    <!-- Hano hashyizwe imbuga neza munsi ya All Rights Reserved -->
+    <div class="social-container">
+        <span>Connect With Us:</span>
+        <div class="social-links">
+            <a href="https://wa.me/250787953095" target="_blank">WhatsApp</a> | 
+            <a href="mailto:info@mullahagrihub.com">Email</a> | 
+            <a href="https://facebook.com/mullahagrihub" target="_blank">Facebook</a> | 
+            <a href="https://tiktok.com/@mullahagrihub" target="_blank">TikTok</a> | 
+            <a href="https://instagram.com/mullahagrihub" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
+```[cite: 5]

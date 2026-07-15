@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Admin - Logistics & Delivery</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.8), rgba(0, 40, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed;
+        }
+        
+        /* Unified Sidebar Navigation Layout */
+        .sidebar { width: 260px; height: 100vh; background: #002d00; position: fixed; left: 0; top: 0; color: white; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .sidebar h2 { font-size: 22px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
+        
+        .menu-container { flex-grow: 1; overflow-y: auto; }
+        .menu-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; color: #ddd; text-decoration: none; display: block; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.1); border-radius: 5px; color: white; }
+        
+        .main-content { margin-left: 280px; padding: 40px; }
+        .admin-card { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+        .status-badge { padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; }
+        .status-shipping { background: #fff3e0; color: #ef6c00; } /* In transit */
+        .status-delivered { background: #e8f5e9; color: #2e7d32; } /* Completed */
+        .status-pending { background: #ffebee; color: #c62828; } /* Waiting */
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th { background: #004d00; color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+
+        .btn-action { background: #004d00; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-action:hover { background: #2e7d32; }
+
+        /* MODAL STYLING */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal-content { background: white; margin: 15% auto; padding: 25px; border-radius: 15px; width: 350px; text-align: center; }
+        .modal select, .modal input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-save { background: #004d00; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<!-- Unified Sidebar Menu -->
+<div class="sidebar">
+    <h2>MULLAH ADMIN</h2>
+    <div class="menu-container">
+        <a href="admin.html" class="menu-item">Dashboard Overview</a>
+        <a href="agrivet-shop.html" class="menu-item">Mullah AgriVet Shop</a>
+        <a href="products.html" class="menu-item">Manage Inventory</a>
+        <a href="customers.html" class="menu-item">Customers List</a>
+        <a href="sales.html" class="menu-item">Finance & Sales</a>
+        <a href="consultancy.html" class="menu-item">Service Requests</a>
+        <a href="logistics.html" class="menu-item active">Logistics & Delivery</a>
+        <a href="settings.html" class="menu-item">System Settings</a>
+    </div>
+    <a href="../index.html" class="menu-item" style="color: #ff8a80; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">Logout Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="admin-card">
+        <h1 style="color: #004d00; margin-top: 0;">Delivery Tracking</h1>
+        <p style="color: #666;">Manage truck assignments and real-time delivery status.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Destination</th>
+                    <th>Driver / Truck</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="logistics-table">
+                <!-- Data will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL UPDATE STATUS -->
+<div id="statusModal" class="modal">
+    <div class="modal-content">
+        <h3>Update Delivery Status</h3>
+        <select id="newStatus">
+            <option value="pending">Pending (Ikirinzwe)</option>
+            <option value="shipping">Shipping (Iri mu nzira)</option>
+            <option value="delivered">Delivered (Yagezeyo)</option>
+        </select>
+        <button class="btn-save" onclick="saveStatusUpdate()">Confirm Change</button>
+        <button style="margin-top:10px; background:none; border:none; color:red; cursor:pointer;" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- MODAL ASSIGN DRIVER -->
+<div id="driverModal" class="modal">
+    <div class="modal-content">
+        <h3>Assign Driver & Truck</h3>
+        <input type="text" id="driverName" placeholder="Driver Name (ex: Mugisha Eric)">
+        <input type="text" id="truckPlate" placeholder="Truck Plate (ex: RAE 123 A)">
+        <button class="btn-save" onclick="saveDriverAssignment()">Assign Now</button>
+        <button style="margin-top:10px; background:none; border:none; color:red; cursor:pointer;" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    let logisticsData = JSON.parse(localStorage.getItem('mullahLogistics')) || [
+        { id: '#ORD-9021', customer: 'Cyiza Jean', destination: 'Kirehe / Nyamugali', driver: 'Jean Bosco (RAE 123 A)', status: 'shipping' },
+        { id: '#ORD-9022', customer: 'Keza Alice', destination: 'Nyagatare / Outskirts', driver: 'Mugisha Eric (RAB 456 B)', status: 'delivered' },
+        { id: '#ORD-9023', customer: 'Umutoni Diane', destination: 'Kigali / Remera', driver: 'Waiting for Pickup', status: 'pending' }
+    ];
+
+    let currentEditId = null;
+
+    function renderLogistics() {
+        const tableBody = document.getElementById('logistics-table');
+        tableBody.innerHTML = '';
+
+        logisticsData.forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.customer}</td>
+                <td>${item.destination}</td>
+                <td>${item.driver}</td>
+                <td><span class="status-badge status-${item.status}">${item.status.charAt(0).toUpperCase() + item.status.slice(1)}</span></td>
+                <td>
+                    <button class="btn-action" onclick="openStatusModal(${index})">Update Status</button>
+                    <button class="btn-action" style="background:#555; margin-left:5px;" onclick="openDriverModal(${index})">Assign</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+        localStorage.setItem('mullahLogistics', JSON.stringify(logisticsData));
+    }
+
+    function openStatusModal(index) {
+        currentEditId = index;
+        document.getElementById('statusModal').style.display = 'block';
+    }
+
+    function openDriverModal(index) {
+        currentEditId = index;
+        document.getElementById('driverModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+    }
+
+    function saveStatusUpdate() {
+        const newStatus = document.getElementById('newStatus').value;
+        logisticsData[currentEditId].status = newStatus;
+        renderLogistics();
+        closeModal();
+    }
+
+    function saveDriverAssignment() {
+        const name = document.getElementById('driverName').value;
+        const plate = document.getElementById('truckPlate').value;
+        if(name && plate) {
+            logisticsData[currentEditId].driver = `${name} (${plate})`;
+            renderLogistics();
+            closeModal();
+        } else {
+            alert("Please provide both driver name and license plate parameters.");
+        }
+    }
+
+    window.onload = renderLogistics;
+</script>
+
+</body>
+</html>

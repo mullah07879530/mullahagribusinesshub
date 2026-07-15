@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - AgriVet Shop & Pharmacy Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0;
+            background: linear-gradient(rgba(0, 50, 0, 0.8), rgba(0, 40, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1546445317-29f4545e9d53?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed; background-position: center; color: #333;
+        }
+        .sidebar { width: 260px; height: 100vh; background: rgba(0, 40, 0, 0.95); position: fixed; left: 0; top: 0; color: white; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .sidebar h2 { font-size: 22px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
+        
+        .menu-container { flex-grow: 1; overflow-y: auto; }
+        .menu-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; color: #ddd; text-decoration: none; display: block; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.1); border-radius: 5px; color: white; }
+        
+        .main-content { margin-left: 280px; padding: 40px; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 30px; }
+        
+        /* Summary Box Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-left: 5px solid #2e7d32; }
+        .stat-card h3 { margin: 0; color: #666; font-size: 14px; text-transform: uppercase; }
+        .stat-card p { margin: 10px 0 0 0; font-size: 28px; font-weight: bold; color: #2e7d32; }
+        
+        .admin-card { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e8f5e9; padding-bottom: 15px; margin-bottom: 10px; }
+        
+        /* New Relocated Standard Text Link Button Style */
+        .action-link-container { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .btn-text-link { background: none; border: none; color: #2e7d32; font-size: 14px; font-weight: 600; cursor: pointer; padding: 5px 10px; display: flex; align-items: center; gap: 6px; transition: color 0.2s ease; }
+        .btn-text-link:hover { color: #1b5e20; text-decoration: underline; }
+        
+        .table-container { background: white; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #004d00; color: white; padding: 15px; font-size: 15px; }
+        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+        .total-row { background: #f1f8e9; font-weight: bold; color: #1b5e20; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>MULLAH ADMIN</h2>
+    <div class="menu-container">
+        <a href="admin.html" class="menu-item">Dashboard Overview</a>
+        <a href="agrivet-shop.html" class="menu-item active">Mullah AgriVet Shop</a>
+        <a href="products.html" class="menu-item">Manage Inventory</a>
+        <a href="customers.html" class="menu-item">Customers List</a>
+        <a href="sales.html" class="menu-item">Finance & Sales</a>
+        <a href="consultancy.html" class="menu-item">Service Requests</a>
+        <a href="logistics.html" class="menu-item">Logistics & Delivery</a>
+        <a href="settings.html" class="menu-item">System Settings</a>
+    </div>
+    <a href="../index.html" class="menu-item" style="color: #ff8a80; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">Logout Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="dashboard-header">
+        <div>
+            <h1 style="margin: 0;">Mullah AgriVet Shop Overview</h1>
+            <p style="margin: 5px 0 0 0; opacity: 0.8;">Live Pharmacy Sales Records & Financial Reports</p>
+        </div>
+    </div>
+
+    <!-- Live Accounting Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Vet Meds Sold</h3>
+            <p id="total-qty-card">0 Items</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Revenue Collected</h3>
+            <p id="total-revenue-card">0 RWF</p>
+        </div>
+        <div class="stat-card">
+            <h3>Report Status</h3>
+            <p style="color: #00c853;">✓ Up to Date</p>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="card-header-flex">
+            <h2 style="color: #004d00; margin: 0;">Pharmacy Sales Report of the Day</h2>
+        </div>
+        
+        <!-- Relocated text-style link just above the table data -->
+        <div class="action-link-container">
+            <button class="btn-text-link" onclick="downloadDailyReport()">📥 Download Report of Day (CSV)</button>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Medicine Name</th>
+                        <th>Category</th>
+                        <th>Quantity Sold</th>
+                        <th>Unit Price</th>
+                        <th>Total Amount (RWF)</th>
+                    </tr>
+                </thead>
+                <tbody id="pharmacy-sales-table">
+                    <!-- Data will be loaded dynamically here -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3">GRAND TOTAL</td>
+                        <td id="total-qty-cell">0</td>
+                        <td>-</td>
+                        <td id="total-revenue-cell">0 RWF</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initializeDemoDataIfEmpty() {
+        const existingSales = localStorage.getItem('mullahPharmacySales');
+        if (!existingSales) {
+            const demoSales = [
+                { date: "2026-07-09 09:30", name: "Oxytetracycline 20%", cat: "Antibiotic", qty: 5, price: 4500, total: 22500 },
+                { date: "2026-07-09 11:15", name: "Albendazole 2500mg", cat: "Dewormer", qty: 12, price: 1500, total: 18000 },
+                { date: "2026-07-09 14:02", name: "Vitamin Complex Injection", cat: "Supplement", qty: 3, price: 8000, total: 24000 },
+                { date: "2026-07-09 16:45", name: "Penstrep", cat: "Antibiotic", qty: 4, price: 6000, total: 24000 }
+            ];
+            localStorage.setItem('mullahPharmacySales', JSON.stringify(demoSales));
+        }
+    }
+
+    function loadPharmacyReports() {
+        initializeDemoDataIfEmpty();
+        
+        const salesData = JSON.parse(localStorage.getItem('mullahPharmacySales')) || [];
+        const tableBody = document.getElementById('pharmacy-sales-table');
+        
+        let totalQty = 0;
+        let totalRevenue = 0;
+        let tableHTML = "";
+
+        salesData.forEach(sale => {
+            totalQty += parseInt(sale.qty);
+            totalRevenue += parseFloat(sale.total);
+            
+            tableHTML += `
+                <tr>
+                    <td>${sale.date}</td>
+                    <td style="font-weight: 600; color: #004d00;">${sale.name}</td>
+                    <td>${sale.cat}</td>
+                    <td>${sale.qty}</td>
+                    <td>${sale.price.toLocaleString()} RWF</td>
+                    <td style="font-weight: bold;">${sale.total.toLocaleString()} RWF</td>
+                </tr>
+            `;
+        });
+
+        tableBody.innerHTML = tableHTML || `<tr><td colspan="6" style="text-align:center; color:#999;">No veterinary medical sales recorded today.</td></tr>`;
+        
+        document.getElementById('total-qty-card').innerText = totalQty + " Items";
+        document.getElementById('total-revenue-card').innerText = totalRevenue.toLocaleString() + " RWF";
+        document.getElementById('total-qty-cell').innerText = totalQty;
+        document.getElementById('total-revenue-cell').innerText = totalRevenue.toLocaleString() + " RWF";
+    }
+
+    function downloadDailyReport() {
+        const salesData = JSON.parse(localStorage.getItem('mullahPharmacySales')) || [];
+        if(salesData.length === 0) {
+            alert("No data available to generate a report!");
+            return;
+        }
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Date/Time,Medicine Name,Category,Quantity Sold,Unit Price (RWF),Total Amount (RWF)\n";
+
+        salesData.forEach(sale => {
+            csvContent += `"${sale.date}","${sale.name}","${sale.cat}","${sale.qty}","${sale.price}","${sale.total}"\n`;
+        });
+
+        let totalRev = salesData.reduce((acc, current) => acc + current.total, 0);
+        let totalQty = salesData.reduce((acc, current) => acc + current.qty, 0);
+        csvContent += `\n"GRAND TOTAL",,,"${totalQty}",,"${totalRev}"\n`;
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        
+        const todayStr = new Date().toISOString().split('T')[0];
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Mullah_Pharmacy_Report_${todayStr}.csv`);
+        document.body.appendChild(link);
+        
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    window.onload = loadPharmacyReports;
+</script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - Account Access</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0; 
+            background-image: linear-gradient(rgba(0, 50, 0, 0.55), rgba(0, 20, 0, 0.65)), 
+                              url('https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.96);
+            width: 400px; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-top: 10px solid #2e7d32;
+        }
+
+        .auth-card h2 {
+            margin-top: 0; color: #002d00; text-align: center;
+            font-size: 26px; font-weight: bold; letter-spacing: 0.5px;
+        }
+
+        .auth-card p {
+            color: #666; text-align: center; font-size: 14px; margin-bottom: 30px;
+        }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-weight: 600; color: #333; margin-bottom: 8px; font-size: 14px; }
+        
+        .input-group input, .input-group select {
+            width: 100%; padding: 12px 15px; border: 1px solid #ccc;
+            border-radius: 8px; font-size: 15px; box-sizing: border-box; transition: 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus { 
+            border-color: #2e7d32; outline: none; background: #f1f8e9; 
+        }
+
+        .btn-auth {
+            width: 100%; background: #2e7d32; color: white; border: none;
+            padding: 14px; font-size: 16px; font-weight: bold; border-radius: 8px;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 10px;
+        }
+
+        .btn-auth:hover { background: #002d00; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        .toggle-link { text-align: center; margin-top: 25px; font-size: 14px; color: #555; }
+        .toggle-link a { color: #2e7d32; text-decoration: none; font-weight: bold; }
+        .toggle-link a:hover { text-decoration: underline; }
+        
+        .btn-home {
+            display: block; text-align: center; margin-top: 15px; font-size: 13px; color: #777; text-decoration: none;
+        }
+        .btn-home:hover { color: #333; }
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <!-- 1. LOGIN FORM -->
+    <div id="login-form">
+        <h2>MULLAH AGRIBUSINESS HUB PORTAL</h2>
+        <p>Log in to access your platform dashboard</p>
+        <form onsubmit="event.preventDefault(); handleLogin();">
+            <div class="input-group">
+                <label>Select Portal / Role</label>
+                <select id="loginRole" required>
+                    <option value="customer">Customer / Farmer Portal</option>
+                    <option value="manager">Pharmacy Inventory Manager</option>
+                    <option value="admin">System Administrator (Admin)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Username, Phone or Email</label>
+                <input type="text" id="loginUsername" placeholder="Enter your credentials" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-auth">Sign In</button>
+        </form>
+        <div class="toggle-link">
+            New here? <a href="#" onclick="switchForm('signup')">Create a Customer Account</a><br><br>
+            <a href="#" onclick="switchForm('forgot')" style="font-weight: normal; color: #777;">Forgot Password?</a>
+        </div>
+    </div>
+
+    <!-- 2. REGISTRATION (CUSTOMER SIGN UP) -->
+    <div id="signup-form" style="display: none;">
+        <h2>REGISTRATION</h2>
+        <p>Create a new client account</p>
+        <form onsubmit="event.preventDefault(); handleSignUp();">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="signUpName" placeholder="e.g., Cyiza Jean" required>
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="text" id="signUpPhone" placeholder="e.g., 0788XXXXXX" required>
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="signUpEmail" placeholder="e.g., umworozi@gmail.com" required>
+            </div>
+            <div class="input-group">
+                <label>Create Password</label>
+                <input type="password" id="signUpPassword" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-auth">Register Now</button>
+        </form>
+        <div class="toggle-link">
+            Already have an account? <a href="#" onclick="switchForm('login')">Sign In Here</a>
+        </div>
+    </div>
+
+    <!-- 3. RESET PASSWORD -->
+    <div id="forgot-form" style="display: none;">
+        <h2>RESET PASSWORD</h2>
+        <p>Enter your phone or email to recover account</p>
+        <form onsubmit="event.preventDefault(); handleReset();">
+            <div class="input-group">
+                <label>Registered Phone / Email</label>
+                <input type="text" id="resetInput" placeholder="e.g., 0788XXXXXX or email@gmail.com" required>
+            </div>
+            <button type="submit" class="btn-auth">Get Reset Code</button>
+        </form>
+        <div class="toggle-link">
+            <a href="#" onclick="switchForm('login')">Back to Login</a>
+        </div>
+    </div>
+    
+    <a href="index.html" class="btn-home">← Back to Homepage</a>
+</div>
+
+<script>
+    function switchForm(formType) {
+        document.getElementById('login-form').style.display = formType === 'login' ? 'block' : 'none';
+        document.getElementById('signup-form').style.display = formType === 'signup' ? 'block' : 'none';
+        document.getElementById('forgot-form').style.display = formType === 'forgot' ? 'block' : 'none';
+    }
+
+    function handleLogin() {
+        const role = document.getElementById('loginRole').value;
+        const user = document.getElementById('loginUsername').value.trim().toLowerCase();
+        const pass = document.getElementById('loginPassword').value.trim();
+
+        if(user === "" || pass === "") {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        // 1. ADMIN LOGIC
+        if (role === "admin") {
+            if ((user === "admin" || user === "admin@mullah.com") && pass === "mullah2026") {
+                alert("Welcome back Administrator! Loading control panel...");
+                window.location.href = 'admin.html';
+            } else {
+                alert("Invalid credentials for Administrative access!");
+            }
+            return;
+        }
+
+        // 2. PHARMACY INVENTORY MANAGER LOGIC
+        if (role === "manager") {
+            if ((user === "manager" || user === "manager@mullah.com") && pass === "pharmacy123") {
+                alert("Welcome back Inventory Manager! Loading stock dashboard...");
+                window.location.href = 'pharmacy-manager.html';
+            } else {
+                alert("Invalid credentials for Pharmacy Management access!");
+            }
+            return;
+        }
+
+        // 3. CUSTOMER / FARMER LOGIC
+        if (role === "customer") {
+            const savedPhone = localStorage.getItem('registeredPhone');
+            const savedEmail = localStorage.getItem('registeredEmail') ? localStorage.getItem('registeredEmail').toLowerCase() : null;
+            const savedPass = localStorage.getItem('registeredPass');
+
+            if ((user === savedPhone || user === savedEmail) && pass === savedPass) {
+                alert("Sign-in successful! Welcome to your dashboard.");
+                window.location.href = 'client-dashboard.html';
+            } else {
+                alert("Invalid account credentials. If you are new, please register an account first.");
+            }
+        }
+    }
+
+    function handleSignUp() {
+        const name = document.getElementById('signUpName').value.trim();
+        const phone = document.getElementById('signUpPhone').value.trim();
+        const email = document.getElementById('signUpEmail').value.trim();
+        const pass = document.getElementById('signUpPassword').value.trim();
+
+        if(name === "" || phone === "" || email === "" || pass === "") {
+            alert("Please fill out all registration fields.");
+            return;
+        }
+
+        localStorage.setItem('registeredPhone', phone);
+        localStorage.setItem('registeredEmail', email);
+        localStorage.setItem('registeredPass', pass);
+        localStorage.setItem('registeredName', name);
+
+        alert("Registration complete, " + name + "! You can now select 'Customer Portal' and sign in.");
+        switchForm('login');
+    }
+
+    function handleReset() {
+        const resetVal = document.getElementById('resetInput').value.trim();
+        if(resetVal === "") {
+            alert("Please supply a valid entry point for recovery.");
+            return;
+        }
+        alert("A dynamic recovery authentication key has been securely forwarded to: " + resetVal);
+        switchForm('login');
+    }
+</script>
+</body>
+</html>

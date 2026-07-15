@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Agrihub - Profile Settings</title>
+    <style>
+        body { 
+            font-family: 'Times New Roman', Times, serif; margin: 0; display: flex; min-height: 100vh; 
+            background: linear-gradient(rgba(244, 249, 244, 0.85), rgba(244, 249, 244, 0.85)), url('https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .sidebar { width: 280px; background-color: #002e00; color: white; padding-top: 30px; border-right: 2px solid #001a00; flex-shrink: 0; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu li a { display: block; padding: 15px 25px; color: #b3ffb3; text-decoration: none; border-bottom: 1px solid #004d00; }
+        .sidebar-menu li a:hover { background-color: #004d00; color: white; }
+        .sidebar-menu li.active a { background-color: #004d00; color: white; font-weight: bold; border-radius: 4px; margin: 5px 10px; padding: 12px 15px; }
+        .exit-portal { color: #ff6666 !important; margin-top: 40px; font-weight: bold; }
+
+        .main-content { flex: 1; padding: 30px; box-sizing: border-box; }
+        header { background-color: #004d00; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; margin-bottom: 30px; }
+        .welcome-box { background: rgba(232, 245, 233, 0.95); padding: 20px; border-radius: 12px; border-left: 8px solid #2e7d32; margin-bottom: 25px; }
+        .settings-form { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 700px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; color: #004d00; margin-bottom: 8px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-save { background: #2e7d32; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-update-password { background: #a04000; color: white; padding: 14px 20px; border-radius: 8px; text-align: center; display: block; text-decoration: none; font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #004d00;">
+        <h3 style="color: white; margin: 0; font-size: 20px;">MULLAH AGRIHUB</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="client-dashboard.html">Dashboard Home</a></li>
+        <li><a href="client-shop.html">Shop / Iguriro</a></li>
+        <li><a href="request-services.html">Request Advisory/Vet</a></li>
+        <li><a href="my-orders.html">My Orders & Invoices</a></li>
+        <li class="active"><a href="profile-settings.html">My Profile Settings</a></li>
+        <li><a href="index.html" class="exit-portal">Exit Portal</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <header>
+        <div><b>Settings / Imiterere ya Porofayile</b></div>
+        <div>Portal: Active</div>
+    </header>
+
+    <div class="welcome-box">
+        <h2>Hindura Porofayile yawe</h2>
+        <p>Hano ushobora kuvugurura amakuru yawe cyangwa guhindura umubare w'ibanga wa konti yawe.</p>
+    </div>
+
+    <div class="settings-form">
+        <h3 style="color: #004d00; margin-top: 0; border-bottom: 2px solid #2e7d32; padding-bottom: 5px;">👤 Amakuru yawe</h3>
+        <form id="profileInfoForm" onsubmit="saveProfileInfo(event)">
+            <div class="form-group">
+                <label>Izina Ryose (Full Name):</label>
+                <input type="text" id="farmerName" class="form-control" value="GAD HABUMUGISHA" required>
+            </div>
+            <div class="form-group">
+                <label>Nomero ya Telefone:</label>
+                <input type="tel" id="farmerPhone" class="form-control" value="0787953095" required>
+            </div>
+            <div class="form-group">
+                <label>Aho uherereye (District):</label>
+                <input type="text" id="farmerLocation" class="form-control" value="Nyagatare" required>
+            </div>
+            <button type="submit" class="btn-save">Bika Amakuru</button>
+        </form>
+
+        <div style="border-top: 1px solid #eee; margin: 25px 0; padding-top: 20px;"></div>
+        <h3 style="color: #004d00; margin-top: 0;">🔒 Umutekano (Security)</h3>
+        <a href="change-password.html" class="btn-update-password">Update Password</a>
+    </div>
+</main>
+
+<script>
+    function saveProfileInfo(event) {
+        event.preventDefault();
+        alert("🎉 Amakuru ya porofayile yashizweho kandi abikwa neza!");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mullah Admin - Customer Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0;
+            background: linear-gradient(rgba(0, 40, 0, 0.8), rgba(0, 40, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-attachment: fixed;
+        }
+        .sidebar { width: 260px; height: 100vh; background: #002d00; position: fixed; left: 0; top: 0; color: white; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .sidebar h2 { font-size: 22px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
+        
+        .menu-container { flex-grow: 1; overflow-y: auto; }
+        .menu-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; color: #ddd; text-decoration: none; display: block; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.1); border-radius: 5px; color: white; }
+        
+        .main-content { margin-left: 280px; padding: 40px; }
+        .admin-card { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .btn-add { background-color: #004d00; color: white; padding: 12px 20px; border: none; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; float: right; }
+        .btn-add:hover { background-color: #2e7d32; }
+        
+        .table-container { background: white; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; clear: both; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #004d00; color: white; padding: 15px; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
+        
+        /* STATUS BADGES CLICKABLE */
+        .status-btn { padding: 6px 12px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; display: inline-block; transition: 0.2s; }
+        .status-active { background: #e8f5e9; color: #2e7d32; }
+        .status-active:hover { background: #c8e6c9; }
+        .status-inactive { background: #ffebee; color: #c62828; }
+        .status-inactive:hover { background: #ffcdd2; }
+        
+        .btn-clear { background: white; color: green; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; float: left; margin-bottom: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>MULLAH ADMIN</h2>
+    <div class="menu-container">
+        <a href="admin.html" class="menu-item">Dashboard Overview</a>
+        <!-- Added AgriVet Shop menu link option below Dashboard Overview -->
+        <a href="agrivet-shop.html" class="menu-item">Mullah AgriVet Shop</a>
+        <a href="products.html" class="menu-item">Manage Inventory</a>
+        <a href="customers.html" class="menu-item active">Customers List</a>
+        <a href="sales.html" class="menu-item">Finance & Sales</a>
+        <a href="consultancy.html" class="menu-item">Service Requests</a>
+        <a href="logistics.html" class="menu-item">Logistics & Delivery</a>
+        <a href="settings.html" class="menu-item">System Settings</a>
+    </div>
+    <a href="../index.html" class="menu-item" style="color: #ff8a80; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">Logout Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="admin-card">
+        <a href="add-customer.html" class="btn-add">+ Add New Customer</a>
+        <button class="btn-clear" onclick="clearCustomers()">Clear Dynamic Data</button>
+        <h2 style="color: #004d00; margin-top: 0;">Customer Database Management</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Phone</th>
+                        <th>Location</th>
+                        <th>Profession</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="customer-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const defaultCustomers = [
+        { name: "Cyiza Jean", phone: "0788123456", location: "Kirehe / Nyamugali", profession: "Farmer", status: "Active" },
+        { name: "Keza Alice", phone: "0787953095", location: "Nyagatare / Outskirts", profession: "Livestock Owner", status: "Active" }
+    ];
+
+    function displayCustomers() {
+        const tableBody = document.getElementById('customer-table-body');
+        tableBody.innerHTML = ""; 
+
+        let allCustomers = JSON.parse(localStorage.getItem('mullahCustomers'));
+        if (!allCustomers) {
+            allCustomers = defaultCustomers;
+            localStorage.setItem('mullahCustomers', JSON.stringify(allCustomers));
+        }
+        
+        allCustomers.forEach((customer, index) => {
+            const row = document.createElement('tr');
+            const statusClass = customer.status === 'Active' ? 'status-active' : 'status-inactive';
+            
+            row.innerHTML = `
+                <td>${customer.name}</td>
+                <td>${customer.phone}</td>
+                <td>${customer.location}</td>
+                <td>${customer.profession}</td>
+                <td>
+                    <button class="status-btn ${statusClass}" onclick="toggleStatus(${index})">
+                        ${customer.status}
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function toggleStatus(index) {
+        let allCustomers = JSON.parse(localStorage.getItem('mullahCustomers'));
+        
+        if (allCustomers[index].status === 'Active') {
+            allCustomers[index].status = 'Inactive';
+        } else {
+            allCustomers[index].status = 'Active';
+        }
+        
+        localStorage.setItem('mullahCustomers', JSON.stringify(allCustomers));
+        displayCustomers();
+    }
+
+    function clearCustomers() {
+        if(confirm("Are you sure you want to clear newly added dynamic customer data?")) {
+            localStorage.removeItem('mullahCustomers');
+            window.location.reload();
+        }
+    }
+
+    window.onload = displayCustomers;
+</script>
+
+</body>
+</html>
